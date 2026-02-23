@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academia Mágica de Matemáticas ✨</title>
+    <title>Academia Mágica ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
     <style>
@@ -12,6 +12,9 @@
             --secondary: #f1c40f;
             --success: #2ecc71;
             --error: #e74c3c;
+            --math: #3498db;
+            --english: #e67e22;
+            --geo: #1abc9c;
             --bg-dark: #2c3e50;
         }
         
@@ -24,7 +27,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -50,15 +53,16 @@
         .glass-panel {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: 3rem;
+            padding: 2.5rem;
             border-radius: 30px;
             box-shadow: 0 0 40px rgba(155, 89, 182, 0.5), inset 0 0 20px rgba(255,255,255,0.2);
             text-align: center;
             width: 90%;
-            max-width: 500px;
+            max-width: 550px;
             border: 2px solid rgba(255,255,255,0.3);
             z-index: 10;
             position: relative;
+            margin: 20px;
         }
 
         h1 {
@@ -75,11 +79,11 @@
         }
 
         .avatar {
-            font-size: 5rem;
-            margin: -60px auto 10px;
+            font-size: 4rem;
+            margin: -50px auto 10px;
             background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -89,7 +93,7 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-10px); }
         }
 
         .stats {
@@ -103,17 +107,29 @@
         }
 
         #question {
-            font-size: 4rem;
+            font-size: 3rem;
             margin: 20px 0;
             color: #fff;
-            text-shadow: 0 0 15px var(--primary), 0 0 30px var(--primary);
+            text-shadow: 0 0 15px var(--primary), 0 0 20px var(--primary);
             font-weight: 600;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
 
         input {
-            width: 200px;
+            width: 80%;
+            max-width: 300px;
             padding: 15px;
-            font-size: 2rem;
+            font-size: 1.8rem;
             border: 4px solid var(--primary);
             border-radius: 20px;
             text-align: center;
@@ -130,19 +146,54 @@
             box-shadow: 0 0 20px var(--secondary), inset 0 3px 5px rgba(0,0,0,0.2);
             transform: scale(1.05);
         }
+        
+        /* Opciones Múltiples (para inglés y capitales) */
+        .options-grid {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .option-btn {
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 15px 10px;
+            font-size: 1.2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0;
+            box-shadow: none;
+            width: 100%;
+        }
+        
+        .option-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+            border-color: var(--secondary);
+        }
+        
+        .option-btn:active {
+            transform: translateY(1px);
+        }
 
-        button {
+        /* Botones Principales */
+        .main-btn {
             background: linear-gradient(to bottom, #f1c40f, #f39c12);
             color: #fff;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.5rem;
+            padding: 15px 30px;
+            font-size: 1.4rem;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 30px;
+            margin-top: 20px;
             box-shadow: 0 6px 0 #d68910, 0 15px 20px rgba(0,0,0,0.4);
             transition: all 0.1s;
-            width: 100%;
+            width: 80%;
+            max-width: 300px;
             font-family: inherit;
             font-weight: 600;
             text-transform: uppercase;
@@ -150,24 +201,50 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
-        button:active {
+        .main-btn:active {
             transform: translateY(6px);
             box-shadow: 0 0 0 #d68910, 0 5px 5px rgba(0,0,0,0.4);
         }
-        
-        button.secondary {
-            background: linear-gradient(to bottom, #3498db, #2980b9);
-            box-shadow: 0 6px 0 #21618c, 0 15px 20px rgba(0,0,0,0.4);
-        }
-        button.secondary:active {
-            box-shadow: 0 0 0 #21618c, 0 5px 5px rgba(0,0,0,0.4);
+
+        /* Botones de Selección de Modo */
+        .mode-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+            width: 100%;
         }
 
+        .mode-btn {
+            padding: 15px;
+            font-size: 1.3rem;
+            border-radius: 20px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.3);
+        }
+        
+        .mode-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 0 rgba(0,0,0,0.3);
+        }
+
+        .mode-math { background: linear-gradient(135deg, #3498db, #2980b9); box-shadow: 0 5px 0 #1f618d; }
+        .mode-english { background: linear-gradient(135deg, #e67e22, #d35400); box-shadow: 0 5px 0 #a04000; }
+        .mode-geo { background: linear-gradient(135deg, #1abc9c, #16a085); box-shadow: 0 5px 0 #117a65; }
+
         #feedback {
-            margin-top: 25px;
+            margin-top: 20px;
             font-size: 1.4rem;
             font-weight: bold;
-            min-height: 40px;
+            min-height: 35px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
@@ -194,7 +271,7 @@
         
         .progress-bar-container {
             width: 100%;
-            height: 15px;
+            height: 12px;
             background: rgba(0,0,0,0.3);
             border-radius: 10px;
             margin-bottom: 20px;
@@ -204,12 +281,12 @@
         #progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--success), #a8e6cf);
+            background: linear-gradient(90deg, var(--secondary), #f39c12);
             transition: width 0.3s ease;
         }
 
         #ranking-container {
-            margin-top: 25px;
+            margin-top: 20px;
             background: rgba(0,0,0,0.2);
             border-radius: 15px;
             padding: 15px;
@@ -225,17 +302,47 @@
         #ranking-list li {
             display: flex;
             justify-content: space-between;
-            padding: 10px;
+            padding: 8px 10px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             background: rgba(255,255,255,0.05);
             margin-bottom: 5px;
             border-radius: 8px;
         }
 
-        #ranking-list li:last-child {
-            margin-bottom: 0;
+        #ranking-list li:last-child { margin-bottom: 0; }
+        
+        .mode-badge {
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 5px;
+            vertical-align: middle;
         }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 8px 15px;
+            font-size: 1.1rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            box-shadow: none;
+            width: auto;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 100;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.4); transform: translateY(-2px); }
+        .back-btn:active { transform: translateY(0); }
+        
     </style>
 </head>
 <body>
@@ -244,16 +351,28 @@
 
 <!-- PANTALLA DE INICIO -->
 <div id="start-screen" class="glass-panel">
-    <div class="avatar" id="start-avatar">🧙‍♂️</div>
+    <div class="avatar" id="start-avatar">🏰</div>
     <h1 id="game-title">Academia Mágica</h1>
-    <p style="font-size: 1.2rem; margin-bottom: 25px;">¡Bienvenido aprendiz! Ingresa tu nombre mágico para empezar el desafío.</p>
+    <p style="font-size: 1.2rem; margin-bottom: 15px;">¡Bienvenido aprendiz! Ingresa tu nombre y elige la materia que quieres estudiar hoy.</p>
     
-    <input type="text" id="player-name" placeholder="Tu nombre..." autofocus autocomplete="off" style="font-size: 1.5rem;">
-    <button onclick="startGame()">¡Comenzar!</button>
+    <input type="text" id="player-name" placeholder="Tu nombre..." autocomplete="off" style="font-size: 1.5rem; width:80%;">
+    
+    <div class="mode-selector">
+        <button class="mode-btn mode-math" onclick="startGame('math')">
+            🔢 Magia Matemática
+        </button>
+        <button class="mode-btn mode-english" onclick="startGame('english')">
+            🔤 Conjuros en Inglés
+        </button>
+        <button class="mode-btn mode-geo" onclick="startGame('geo')">
+            🌍 Explorador del Mundo
+        </button>
+    </div>
 </div>
 
 <!-- PANTALLA DE JUEGO -->
 <div id="game-container" class="glass-panel" style="display: none;">
+    <button class="back-btn" onclick="returnToMenu()" title="Volver al Inicio">🏠 Volver</button>
     <div id="quiz-section">
         <div class="avatar" id="wizard-avatar">🧙‍♂️</div>
         <h1 id="game-title-active">Magia Matemática</h1>
@@ -268,8 +387,21 @@
         </div>
 
         <div id="question">--</div>
-        <input type="number" id="answer" placeholder="?">
-        <button onclick="checkAnswer()">¡Lanzar Hechizo!</button>
+        
+        <div class="input-group">
+            <!-- Matemáticas: Input libre -->
+            <input type="number" id="answer" placeholder="?" style="display: none;">
+            <button id="btn-submit" class="main-btn" onclick="checkAnswer()" style="display: none;">¡Lanzar Hechizo!</button>
+            
+            <!-- Inglés/Geo: Botones Flexibles -->
+            <div id="options-container" class="options-grid">
+                <button class="option-btn" onclick="checkMultipleChoice(0)" id="opt-0">A</button>
+                <button class="option-btn" onclick="checkMultipleChoice(1)" id="opt-1">B</button>
+                <button class="option-btn" onclick="checkMultipleChoice(2)" id="opt-2">C</button>
+                <button class="option-btn" onclick="checkMultipleChoice(3)" id="opt-3">D</button>
+            </div>
+        </div>
+        
         <div id="feedback"></div>
     </div>
 </div>
@@ -282,16 +414,54 @@
     <p id="time-result" style="font-size: 1.3rem; margin-bottom: 15px;"></p>
     
     <div id="ranking-container">
-        <h2>🏆 Ranking del Día</h2>
+        <h2>🏆 Salón de la Fama Diario</h2>
         <ul id="ranking-list">
             <!-- Ranking items will be injected here -->
         </ul>
     </div>
 
-    <button onclick="location.reload()" style="margin-top: 25px;">Jugar de nuevo 🔄</button>
+    <button class="main-btn" onclick="location.reload()" style="margin-top: 25px; width: 100%;">Volver a la Academia 🏰</button>
 </div>
 
 <script>
+    // Datos: Preguntas de Inglés Básico (4to grado)
+    const englishQuestions = [
+        { q: "¿Cómo se dice 'Manzana'?", options: ["Apple", "Orange", "Banana", "Grape"], correct: 0 },
+        { q: "¿Qué color es 'Yellow'?", options: ["Rojo", "Verde", "Amarillo", "Azul"], correct: 2 },
+        { q: "Traduce: 'Dog'", options: ["Gato", "Pájaro", "Perro", "Pez"], correct: 2 },
+        { q: "¿Qué número es 'Eight'?", options: ["3", "8", "18", "80"], correct: 1 },
+        { q: "¿Cómo saludas por la mañana?", options: ["Good night", "Good evening", "Good morning", "Goodbye"], correct: 2 },
+        { q: "Traduce: 'Cat'", options: ["Perro", "Ratón", "Gato", "Conejo"], correct: 2 },
+        { q: "¿Qué significa 'Brother'?", options: ["Hermano", "Padre", "Amigo", "Tío"], correct: 0 },
+        { q: "¿Cómo se dice 'Gracias'?", options: ["Please", "Sorry", "Hello", "Thank you"], correct: 3 },
+        { q: "Traduce: 'House'", options: ["Casa", "Árbol", "Coche", "Escuela"], correct: 0 },
+        { q: "¿Qué color es 'Blue'?", options: ["Blanco", "Negro", "Azul", "Rojo"], correct: 2 },
+        { q: "¿Qué día es 'Monday'?", options: ["Lunes", "Martes", "Viernes", "Domingo"], correct: 0 },
+        { q: "¿Cómo se dice 'Gato'?", options: ["Dog", "Cat", "Bird", "Fish"], correct: 1 },
+        { q: "¿Qué significa 'Water'?", options: ["Fuego", "Tierra", "Agua", "Aire"], correct: 2 },
+        { q: "Traduce: 'Book'", options: ["Lápiz", "Cuaderno", "Libro", "Mochila"], correct: 2 },
+        { q: "¿Cuál no es un animal?", options: ["Tiger", "Lion", "Chair", "Bear"], correct: 2 }
+    ];
+
+    // Datos: Preguntas de Capitales (América, Europa Básicas)
+    const geoQuestions = [
+        { q: "Capital de Argentina", options: ["Rosario", "Córdoba", "Buenos Aires", "Mendoza"], correct: 2 },
+        { q: "Capital de Brasil", options: ["Río de Janeiro", "Brasilia", "San Pablo", "Salvador"], correct: 1 },
+        { q: "Capital de España", options: ["Barcelona", "Madrid", "Sevilla", "Valencia"], correct: 1 },
+        { q: "Capital de Francia", options: ["Londres", "Roma", "París", "Berlín"], correct: 2 },
+        { q: "Capital de Italia", options: ["Roma", "Venecia", "Milán", "Nápoles"], correct: 0 },
+        { q: "Capital de Estados Unidos", options: ["Nueva York", "Los Ángeles", "Miami", "Washington D.C."], correct: 3 },
+        { q: "Capital de Uruguay", options: ["Punta del Este", "Montevideo", "Colonia", "Salto"], correct: 1 },
+        { q: "Capital de Chile", options: ["Valparaíso", "Santiago", "Concepción", "Antofagasta"], correct: 1 },
+        { q: "Capital de Perú", options: ["Cusco", "Arequipa", "Lima", "Trujillo"], correct: 2 },
+        { q: "Capital de México", options: ["Cancún", "Guadalajara", "Ciudad de México", "Monterrey"], correct: 2 },
+        { q: "Capital de Inglaterra", options: ["Manchester", "Liverpool", "Londres", "Oxford"], correct: 2 },
+        { q: "Capital de Colombia", options: ["Medellín", "Cali", "Bogotá", "Cartagena"], correct: 2 },
+        { q: "Capital de Alemania", options: ["Múnich", "Berlín", "Fráncfort", "Hamburgo"], correct: 1 },
+        { q: "Capital de Japón", options: ["Kioto", "Osaka", "Tokio", "Hiroshima"], correct: 2 },
+        { q: "Capital de Rusia", options: ["San Petersburgo", "Moscú", "Kazán", "Sochi"], correct: 1 }
+    ];
+
     // Generar fondo de estrellas
     const starsContainer = document.getElementById('stars-container');
     for (let i = 0; i < 50; i++) {
@@ -307,7 +477,11 @@
     }
 
     let playerName = "";
-    let currentAns, score = 0, count = 1, seconds = 0, timerInterval;
+    let gameMode = ""; // 'math', 'english', 'geo'
+    let currentAns = null; // Respuesta matemática
+    let currentQ = null; // Objeto pregunta (ingles/geo)
+    let questionsList = []; // Array mezclado de preguntas elegidas
+    let score = 0, count = 1, seconds = 0, timerInterval;
     const totalQuestions = 10;
     let synth = window.speechSynthesis;
 
@@ -318,6 +492,7 @@
         utter.pitch = pitch;
         utter.rate = rate;
         utter.lang = 'es-ES';
+        // Leer inglés si la pregunta es de inglés y estamos leyendo opciones, pero para feedback general mejor en español
         synth.speak(utter);
     }
 
@@ -331,31 +506,81 @@
         setTimeout(() => pop.remove(), 1000);
     }
 
+    function shuffleArray(array) {
+        let arr = array.slice();
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function returnToMenu() {
+        if (timerInterval) clearInterval(timerInterval);
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('score-board').style.display = 'none';
+        document.getElementById('start-screen').style.display = 'block';
+        playSound("Volviendo al inicio", 1.2);
+    }
+
     // --- Lógica de Inicio ---
-    function startGame() {
+    function startGame(mode) {
         const nameInput = document.getElementById('player-name').value.trim();
         if (!nameInput) {
-            playSound("Por favor, dime tu nombre mágico", 1.2);
+            playSound("Por favor, dime tu nombre", 1.2);
             document.getElementById('start-screen').classList.add('shake');
             setTimeout(() => document.getElementById('start-screen').classList.remove('shake'), 500);
             return;
         }
         
         playerName = nameInput;
+        gameMode = mode;
+        
+        // Configurar UI según el modo
+        const titleEl = document.getElementById('game-title-active');
+        const qEl = document.getElementById('question');
+        const mathInput = document.getElementById('answer');
+        const mathBtn = document.getElementById('btn-submit');
+        const optionsGrid = document.getElementById('options-container');
+        
+        const avatarEl = document.getElementById('wizard-avatar');
+        
+        // Reset inputs
+        mathInput.style.display = 'none';
+        mathBtn.style.display = 'none';
+        optionsGrid.style.display = 'none';
+
+        if(mode === 'math') {
+            titleEl.innerText = "Magia Matemática";
+            titleEl.style.color = "var(--math)";
+            avatarEl.innerText = "🧙‍♂️";
+            mathInput.style.display = 'block';
+            mathBtn.style.display = 'block';
+        } else if (mode === 'english') {
+            titleEl.innerText = "Conjuros en Inglés";
+            titleEl.style.color = "var(--english)";
+            avatarEl.innerText = "🇬🇧";
+            optionsGrid.style.display = 'grid';
+            questionsList = shuffleArray(englishQuestions).slice(0, 10);
+        } else if (mode === 'geo') {
+            titleEl.innerText = "Explorador del Mundo";
+            titleEl.style.color = "var(--geo)";
+            avatarEl.innerText = "🌍";
+            optionsGrid.style.display = 'grid';
+            questionsList = shuffleArray(geoQuestions).slice(0, 10);
+            qEl.style.fontSize = "2.2rem"; // Texto un poco más chico para nombres largos
+        }
+
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('game-container').style.display = 'block';
         
-        playSound(`¡Prepara tu varita, ${playerName}!`, 1.2);
+        playSound(`¡Prepara tu mente, ${playerName}!`, 1.2);
         
         // Empezar juego
         score = 0; count = 1; seconds = 0;
         startTimer();
         generateQuestion();
     }
-
-    document.getElementById('player-name').addEventListener('keypress', (e) => { 
-        if(e.key === 'Enter') startGame(); 
-    });
 
     // --- Lógica del Juego ---
     function startTimer() {
@@ -366,98 +591,160 @@
     }
 
     function generateQuestion() {
-        const ops = ['+', '-', '*', '/'];
-        const op = ops[Math.floor(Math.random() * ops.length)];
-        let n1, n2;
+        const qEl = document.getElementById('question');
+        const avatarEl = document.getElementById('wizard-avatar');
+        
+        if (gameMode === 'math') {
+            avatarEl.innerText = "🧙‍♂️";
+            const ops = ['+', '-', '*', '/'];
+            const op = ops[Math.floor(Math.random() * ops.length)];
+            let n1, n2;
 
-        // Dificultad para niño de 9 años (4to / 5to grado)
-        if (op === '+') { 
-            // Sumas un poco más grandes (hasta 3 dígitos)
-            n1 = Math.floor(Math.random() * 800) + 100; // 100 a 899
-            n2 = Math.floor(Math.random() * 800) + 100; // 100 a 899
-            currentAns = n1 + n2; 
-        }
-        else if (op === '-') { 
-            // Restas de 3 dígitos garantizando resultado positivo
-            n1 = Math.floor(Math.random() * 800) + 200; // 200 a 999
-            n2 = Math.floor(Math.random() * (n1 - 100)) + 50; // Siempre menor que n1
-            currentAns = n1 - n2; 
-        }
-        else if (op === '*') { 
-            if (Math.random() > 0.5) {
-                // Multiplicaciones clásicas hasta el 12x12
-                n1 = Math.floor(Math.random() * 11) + 2;    // 2 a 12
-                n2 = Math.floor(Math.random() * 11) + 2;    // 2 a 12
-            } else {
-                // Multiplicación de 2 dígitos por 1 dígito (ej. 34 x 6)
-                n1 = Math.floor(Math.random() * 40) + 10;   // 10 a 49
-                n2 = Math.floor(Math.random() * 8) + 2;     // 2 a 9
+            if (op === '+') { 
+                n1 = Math.floor(Math.random() * 800) + 100;
+                n2 = Math.floor(Math.random() * 800) + 100;
+                currentAns = n1 + n2; 
             }
-            if (Math.random() > 0.5) [n1, n2] = [n2, n1]; // Aleatorizar orden
-            currentAns = n1 * n2; 
-        }
-        else { 
-            // Divisiones exactas un poco más difíciles
-            currentAns = Math.floor(Math.random() * 20) + 2; // Resultado de 2 a 21
-            n2 = Math.floor(Math.random() * 11) + 2;         // Divisor de 2 a 12
-            n1 = currentAns * n2;                            // Dividendo
-        }
+            else if (op === '-') { 
+                n1 = Math.floor(Math.random() * 800) + 200;
+                n2 = Math.floor(Math.random() * (n1 - 100)) + 50;
+                currentAns = n1 - n2; 
+            }
+            else if (op === '*') { 
+                if (Math.random() > 0.5) {
+                    n1 = Math.floor(Math.random() * 11) + 2;
+                    n2 = Math.floor(Math.random() * 11) + 2;
+                } else {
+                    n1 = Math.floor(Math.random() * 40) + 10;
+                    n2 = Math.floor(Math.random() * 8) + 2;
+                }
+                if (Math.random() > 0.5) [n1, n2] = [n2, n1];
+                currentAns = n1 * n2; 
+            }
+            else { 
+                currentAns = Math.floor(Math.random() * 20) + 2;
+                n2 = Math.floor(Math.random() * 11) + 2;
+                n1 = currentAns * n2;
+            }
 
-        const opSymbol = op === '*' ? 'x' : (op === '/' ? '÷' : op);
-        document.getElementById('question').innerText = `${n1} ${opSymbol} ${n2}`;
-        document.getElementById('answer').value = "";
+            const opSymbol = op === '*' ? 'x' : (op === '/' ? '÷' : op);
+            qEl.innerText = `${n1} ${opSymbol} ${n2}`;
+            document.getElementById('answer').value = "";
+            setTimeout(() => document.getElementById('answer').focus(), 50);
+            
+        } else {
+            // Inglés o Geo
+            avatarEl.innerText = gameMode === 'english' ? "🇬🇧" : "🌍";
+            currentQ = questionsList[count - 1];
+            qEl.innerText = currentQ.q;
+            
+            // Actualizar botones de opción
+            for(let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`opt-${i}`);
+                btn.innerText = currentQ.options[i];
+                btn.style.background = "rgba(255,255,255,0.15)";
+                btn.disabled = false;
+            }
+        }
         
-        // Truco para asegurar que el input reciba el foco en móviles y PC
-        setTimeout(() => document.getElementById('answer').focus(), 50);
-        
-        document.getElementById('wizard-avatar').innerText = "🧙‍♂️";
         updateProgressBar();
     }
 
     function updateProgressBar() {
         const percentage = ((count - 1) / totalQuestions) * 100;
         document.getElementById('progress-bar').style.width = percentage + '%';
+        
+        // Cambiar color de la barra según el modo
+        const pb = document.getElementById('progress-bar');
+        if(gameMode === 'math') pb.style.background = "linear-gradient(90deg, #2ecc71, #a8e6cf)";
+        else if (gameMode === 'english') pb.style.background = "linear-gradient(90deg, #e67e22, #f39c12)";
+        else pb.style.background = "linear-gradient(90deg, #1abc9c, #16a085)";
     }
 
+    // Checking Math
     function checkAnswer() {
-        if(document.getElementById('answer').value === "") return;
+        const inputEl = document.getElementById('answer');
+        if(inputEl.value === "") return;
         
-        const userVal = parseInt(document.getElementById('answer').value);
+        const userVal = parseInt(inputEl.value);
         const fb = document.getElementById('feedback');
         const container = document.getElementById('game-container');
         
         if (userVal === currentAns) {
-            score++;
-            fb.innerHTML = "<span style='color:var(--success)'>¡Correcto! ✨🌟</span>";
-            document.getElementById('wizard-avatar').innerText = "🧙‍♂️✨";
-            playSound("¡Excelente!", 1.5);
-            
-            const rect = container.getBoundingClientRect();
-            createMagicPop(rect.left + rect.width/2, rect.top + rect.height/2, "⭐");
-            createMagicPop(rect.left + rect.width/2 - 50, rect.top + rect.height/2 - 50, "✨");
-            createMagicPop(rect.left + rect.width/2 + 50, rect.top + rect.height/2 - 50, "🌟");
-            
-            if(window.confetti) {
-                confetti({
-                    particleCount: 40,
-                    spread: 50,
-                    origin: { y: 0.6 },
-                    colors: ['#f1c40f', '#9b59b6', '#2ecc71']
-                });
-            }
-            
-            setTimeout(nextQuestion, 1200);
+            handleCorrect();
         } else {
             const isHigher = userVal < currentAns;
-            fb.innerHTML = `<span style='color:var(--error)'>¡Prueba un poco más ${isHigher ? 'alto ⬆️' : 'bajo ⬇️'}!</span>`;
+            fb.innerHTML = `<span style='color:var(--error)'>¡Prueba un número más ${isHigher ? 'alto ⬆️' : 'bajo ⬇️'}!</span>`;
             document.getElementById('wizard-avatar').innerText = "🧙‍♂️💦";
             playSound("Ups, un poco más " + (isHigher ? "alto" : "bajo"), 0.8);
             
             container.classList.add('shake');
             setTimeout(() => container.classList.remove('shake'), 500);
-            document.getElementById('answer').value = ""; 
-            setTimeout(() => document.getElementById('answer').focus(), 50);
+            inputEl.value = ""; 
+            setTimeout(() => inputEl.focus(), 50);
         }
+    }
+
+    document.getElementById('answer').addEventListener('keypress', (e) => { 
+        if(e.key === 'Enter') checkAnswer(); 
+    });
+
+    // Checking English/Geo
+    function checkMultipleChoice(selectedIndex) {
+        const fb = document.getElementById('feedback');
+        const container = document.getElementById('game-container');
+        
+        // Deshabilitar todos los botones para que no haga doble click
+        for(let i=0; i<4; i++) document.getElementById(`opt-${i}`).disabled = true;
+
+        if (selectedIndex === currentQ.correct) {
+            document.getElementById(`opt-${selectedIndex}`).style.background = "var(--success)";
+            handleCorrect();
+        } else {
+            // Incorrecto
+            document.getElementById(`opt-${selectedIndex}`).style.background = "var(--error)";
+            document.getElementById(`opt-${currentQ.correct}`).style.background = "var(--success)"; // mostrar correcta
+            
+            fb.innerHTML = `<span style='color:var(--error)'>¡Ups! Era ${currentQ.options[currentQ.correct]}</span>`;
+            document.getElementById('wizard-avatar').innerText = gameMode === 'english' ? "🙈" : "😕";
+            playSound("Ups, casi", 0.8);
+            
+            container.classList.add('shake');
+            setTimeout(() => container.classList.remove('shake'), 500);
+            
+            // Pasar a la siguiente después de ver la correcta (sin sumar score)
+            setTimeout(nextQuestion, 2000);
+        }
+    }
+
+    function handleCorrect() {
+        const fb = document.getElementById('feedback');
+        const container = document.getElementById('game-container');
+        
+        score++;
+        fb.innerHTML = "<span style='color:var(--success)'>¡Correcto! ✨🌟</span>";
+        
+        if(gameMode === 'math') document.getElementById('wizard-avatar').innerText = "🧙‍♂️✨";
+        else if(gameMode === 'english') document.getElementById('wizard-avatar').innerText = "🗽✨";
+        else document.getElementById('wizard-avatar').innerText = "🗺️✨";
+
+        playSound("¡Excelente!", 1.5);
+        
+        const rect = container.getBoundingClientRect();
+        createMagicPop(rect.left + rect.width/2, rect.top + rect.height/2, "⭐");
+        createMagicPop(rect.left + rect.width/2 - 50, rect.top + rect.height/2 - 50, "✨");
+        createMagicPop(rect.left + rect.width/2 + 50, rect.top + rect.height/2 - 50, "🌟");
+        
+        if(window.confetti) {
+            confetti({
+                particleCount: 40,
+                spread: 50,
+                origin: { y: 0.6 },
+                colors: ['#f1c40f', '#9b59b6', '#2ecc71']
+            });
+        }
+        
+        setTimeout(nextQuestion, 1200);
     }
 
     function nextQuestion() {
@@ -473,16 +760,12 @@
         }
     }
 
-    document.getElementById('answer').addEventListener('keypress', (e) => { 
-        if(e.key === 'Enter') checkAnswer(); 
-    });
-
     // --- Lógica de Resultados y Ranking ---
     function showResults() {
         document.getElementById('game-container').style.display = 'none';
         document.getElementById('score-board').style.display = 'block';
         
-        document.getElementById('final-msg').innerText = `¡${score} hechizos correctos! ⭐`;
+        document.getElementById('final-msg').innerText = `¡${score} aciertos! ⭐`;
         document.getElementById('time-result').innerText = `Tiempo: ${seconds} segundos ⏱️`;
         playSound(`¡Terminaste ${playerName}! Conseguiste ${score} puntos`, 1.2);
         
@@ -497,26 +780,26 @@
             }());
         }
 
-        saveAndShowRanking(score, seconds);
+        saveAndShowRanking(score, seconds, gameMode);
     }
 
-    function saveAndShowRanking(finalScore, finalTime) {
-        const today = new Date().toLocaleDateString('es-ES'); // Fecha local
-        let ranking = JSON.parse(localStorage.getItem('magiaMatematicaRanking')) || [];
+    function saveAndShowRanking(finalScore, finalTime, mode) {
+        const today = new Date().toLocaleDateString('es-ES');
+        let ranking = JSON.parse(localStorage.getItem('academiaMagicaRanking')) || [];
         
         // Agregar jugada actual
-        ranking.push({ name: playerName, score: finalScore, time: finalTime, date: today });
+        ranking.push({ name: playerName, score: finalScore, time: finalTime, date: today, mode: mode });
         
-        // Ordenar por puntaje (descendente), luego por tiempo (ascendente)
+        // Ordenar: 1) Score(desc), 2) Tiempo(asc)
         ranking.sort((a, b) => {
             if (b.score !== a.score) return b.score - a.score;
             return a.time - b.time;
         });
         
-        // Guardar en localStorage
-        localStorage.setItem('magiaMatematicaRanking', JSON.stringify(ranking));
+        localStorage.setItem('academiaMagicaRanking', JSON.stringify(ranking));
         
-        // Renderizar Top 5 del día actual
+        // Renderizar Top 5 del día actual (sin importar qué materia, o podríamos filtrar)
+        // Por ahora muestro el Ranking mezclado general del día
         const rankingList = document.getElementById('ranking-list');
         rankingList.innerHTML = '';
         
@@ -529,12 +812,17 @@
             if(index === 1) medalla = '🥈';
             if(index === 2) medalla = '🥉';
             
-            // Destacar si es el jugador actual (última partida jugada)
-            const isCurrentPlay = entry.name === playerName && entry.score === finalScore && entry.time === finalTime ? 'font-weight: bold; color: var(--secondary);' : '';
+            const isCurrentPlay = entry.name === playerName && entry.score === finalScore && entry.time === finalTime && entry.mode === mode ? 'font-weight: bold; color: var(--secondary);' : '';
             
+            let colorModo = entry.mode === 'math' ? 'var(--math)' : (entry.mode === 'english' ? 'var(--english)' : 'var(--geo)');
+            let iconoModo = entry.mode === 'math' ? '🔢' : (entry.mode === 'english' ? '🔤' : '🌍');
+
             li.innerHTML = `
-                <span style="${isCurrentPlay}">${medalla} ${entry.name}</span> 
-                <span style="${isCurrentPlay}">${entry.score} pts <small>(${entry.time}s)</small></span>
+                <div style="display:flex; align-items:center; ${isCurrentPlay}">
+                    <span>${medalla} ${entry.name}</span>
+                    <span class="mode-badge" style="background:${colorModo};">${iconoModo}</span>
+                </div>
+                <span style="${isCurrentPlay}">${entry.score}/10 <small>(${entry.time}s)</small></span>
             `;
             rankingList.appendChild(li);
         });

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafío Matemático Pro</title>
+    <style>
+        :root { --primary: #6c5ce7; --success: #00b894; --error: #d63031; }
+        body { font-family: 'Arial Rounded MT Bold', sans-serif; background: linear-gradient(135deg, #a8c0ff, #3f2b96); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #2d3436; }
+        #game-container { background: #fff; padding: 2.5rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center; width: 90%; max-width: 450px; border: 5px solid #fff; }
+        .stats { display: flex; justify-content: space-between; font-size: 1.1rem; margin-bottom: 10px; color: #636e72; }
+        #question { font-size: 3.5rem; margin: 15px 0; color: var(--primary); text-shadow: 2px 2px #eee; }
+        input { width: 120px; padding: 15px; font-size: 2rem; border: 3px solid #dfe6e9; border-radius: 15px; text-align: center; outline: none; }
+        input:focus { border-color: var(--primary); }
+        button { background: var(--success); color: white; border: none; padding: 15px 30px; font-size: 1.3rem; border-radius: 50px; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 0 #009475; transition: 0.1s; width: 100%; }
+        button:active { transform: translateY(4px); box-shadow: 0 1px 0 #009475; }
+        #feedback { margin-top: 20px; font-size: 1.2rem; font-weight: bold; min-height: 30px; }
+        .bounce { animation: bounce 0.5s; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="quiz-section">
+        <div class="stats">
+            <span>Pregunta: <b id="current-idx">1</b>/10</span>
+            <span>Tiempo: <b id="timer">0</b>s</span>
+        </div>
+        <div id="question">--</div>
+        <input type="number" id="answer" autofocus>
+        <button onclick="checkAnswer()">¡LISTO!</button>
+        <div id="feedback"></div>
+    </div>
+
+    <div id="score-board" style="display:none;">
+        <h1>🏆 ¡Fin del Juego!</h1>
+        <p id="final-msg" style="font-size: 1.4rem;"></p>
+        <p id="time-result"></p>
+        <button onclick="location.reload()">Jugar de nuevo</button>
+    </div>
+</div>
+
+<script>
+    let currentAns, score = 0, count = 1, seconds = 0, timerInterval;
+    const synth = window.speechSynthesis;
+
+    function playSound(text, pitch = 1) {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.pitch = pitch;
+        utter.lang = 'es-AR';
+        synth.speak(utter);
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => { seconds++; document.getElementById('timer').innerText = seconds; }, 1000);
+    }
+
+    function generateQuestion() {
+        const ops = ['+', '-', '*', '/'];
+        const op = ops[Math.floor(Math.random() * ops.length)];
+        let n1, n2;
+
+        if (op === '+') { n1 = Math.floor(Math.random() * 100) + 10; n2 = Math.floor(Math.random() * 100) + 10; currentAns = n1 + n2; }
+        else if (op === '-') { n1 = Math.floor(Math.random() * 150) + 50; n2 = Math.floor(Math.random() * n1); currentAns = n1 - n2; }
+        else if (op === '*') { n1 = Math.floor(Math.random() * 15) + 2; n2 = Math.floor(Math.random() * 12) + 2; currentAns = n1 * n2; }
+        else { currentAns = Math.floor(Math.random() * 12) + 1; n2 = Math.floor(Math.random() * 12) + 1; n1 = currentAns * n2; }
+
+        document.getElementById('question').innerText = `${n1} ${op.replace('*','x').replace('/','÷')} ${n2}`;
+        document.getElementById('answer').value = "";
+        document.getElementById('answer').focus();
+    }
+
+    function checkAnswer() {
+        const userVal = parseInt(document.getElementById('answer').value);
+        const fb = document.getElementById('feedback');
+        
+        if (userVal === currentAns) {
+            score++;
+            fb.innerHTML = "<span style='color:var(--success)'>¡GENIAL! 🌟</span>";
+            playSound("¡Muy bien!", 1.5);
+            document.getElementById('game-container').classList.add('bounce');
+            setTimeout(() => document.getElementById('game-container').classList.remove('bounce'), 500);
+            nextQuestion();
+        } else {
+            fb.innerHTML = `<span style='color:var(--error)'>${userVal < currentAns ? '¡Más alto! ⬆️' : '¡Más bajo! ⬇️'}</span>`;
+            playSound("Casi", 0.5);
+        }
+    }
+
+    function nextQuestion() {
+        if (count < 10) {
+            count++;
+            document.getElementById('current-idx').innerText = count;
+            setTimeout(generateQuestion, 800);
+        } else {
+            clearInterval(timerInterval);
+            showResults();
+        }
+    }
+
+    function showResults() {
+        document.getElementById('quiz-section').style.display = 'none';
+        document.getElementById('score-board').style.display = 'block';
+        document.getElementById('final-msg').innerText = `Puntaje: ${score}/10`;
+        document.getElementById('time-result').innerText = `Lo hiciste en ${seconds} segundos.`;
+        playSound(`Terminaste. Tu puntaje es ${score}`, 1);
+    }
+
+    startTimer();
+    generateQuestion();
+    document.getElementById('answer').addEventListener('keypress', (e) => { if(e.key === 'Enter') checkAnswer(); });
+</script>
+</body>
+</html>

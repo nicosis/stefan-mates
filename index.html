@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academia Mágica de Matemáticas ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
     <style>
         :root {
             --primary: #9b59b6;
@@ -27,7 +28,6 @@
             position: relative;
         }
 
-        /* Twinkling stars background */
         .stars {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -47,7 +47,7 @@
             100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px white; }
         }
 
-        #game-container {
+        .glass-panel {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             padding: 3rem;
@@ -66,6 +66,12 @@
             font-size: 2.2rem;
             margin-top: 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            color: #fff;
+            margin-top: 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
 
         .avatar {
@@ -105,9 +111,9 @@
         }
 
         input {
-            width: 160px;
+            width: 200px;
             padding: 15px;
-            font-size: 2.5rem;
+            font-size: 2rem;
             border: 4px solid var(--primary);
             border-radius: 20px;
             text-align: center;
@@ -148,6 +154,14 @@
             transform: translateY(6px);
             box-shadow: 0 0 0 #d68910, 0 5px 5px rgba(0,0,0,0.4);
         }
+        
+        button.secondary {
+            background: linear-gradient(to bottom, #3498db, #2980b9);
+            box-shadow: 0 6px 0 #21618c, 0 15px 20px rgba(0,0,0,0.4);
+        }
+        button.secondary:active {
+            box-shadow: 0 0 0 #21618c, 0 5px 5px rgba(0,0,0,0.4);
+        }
 
         #feedback {
             margin-top: 25px;
@@ -177,8 +191,6 @@
             0% { transform: scale(0) translateY(0); opacity: 1; }
             100% { transform: scale(1.5) translateY(-50px); opacity: 0; }
         }
-
-        #score-board { display: none; }
         
         .progress-bar-container {
             width: 100%;
@@ -195,16 +207,56 @@
             background: linear-gradient(90deg, var(--success), #a8e6cf);
             transition: width 0.3s ease;
         }
+
+        #ranking-container {
+            margin-top: 25px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        #ranking-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        #ranking-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.05);
+            margin-bottom: 5px;
+            border-radius: 8px;
+        }
+
+        #ranking-list li:last-child {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
 
 <div class="stars" id="stars-container"></div>
 
-<div id="game-container">
+<!-- PANTALLA DE INICIO -->
+<div id="start-screen" class="glass-panel">
+    <div class="avatar" id="start-avatar">🧙‍♂️</div>
+    <h1 id="game-title">Academia Mágica</h1>
+    <p style="font-size: 1.2rem; margin-bottom: 25px;">¡Bienvenido aprendiz! Ingresa tu nombre mágico para empezar el desafío.</p>
+    
+    <input type="text" id="player-name" placeholder="Tu nombre..." autofocus autocomplete="off" style="font-size: 1.5rem;">
+    <button onclick="startGame()">¡Comenzar!</button>
+</div>
+
+<!-- PANTALLA DE JUEGO -->
+<div id="game-container" class="glass-panel" style="display: none;">
     <div id="quiz-section">
         <div class="avatar" id="wizard-avatar">🧙‍♂️</div>
-        <h1 id="game-title">Magia Matemática</h1>
+        <h1 id="game-title-active">Magia Matemática</h1>
         
         <div class="progress-bar-container">
             <div id="progress-bar"></div>
@@ -216,25 +268,31 @@
         </div>
 
         <div id="question">--</div>
-        <input type="number" id="answer" autofocus placeholder="?">
+        <input type="number" id="answer" placeholder="?">
         <button onclick="checkAnswer()">¡Lanzar Hechizo!</button>
         <div id="feedback"></div>
     </div>
-
-    <div id="score-board">
-        <div class="avatar">🎓</div>
-        <h1>¡Misión Cumplida!</h1>
-        <p id="final-msg" style="font-size: 1.8rem; color: var(--secondary); margin: 20px 0;"></p>
-        <p id="time-result" style="font-size: 1.3rem; margin-bottom: 30px;"></p>
-        <button onclick="location.reload()">Jugar de nuevo 🔄</button>
-    </div>
 </div>
 
-<!-- Light Confetti Script for the magic effect -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<!-- PANTALLA DE RESULTADOS Y RANKING -->
+<div id="score-board" class="glass-panel" style="display: none;">
+    <div class="avatar">🎓</div>
+    <h1>¡Misión Cumplida!</h1>
+    <p id="final-msg" style="font-size: 1.8rem; color: var(--secondary); margin: 15px 0;"></p>
+    <p id="time-result" style="font-size: 1.3rem; margin-bottom: 15px;"></p>
+    
+    <div id="ranking-container">
+        <h2>🏆 Ranking del Día</h2>
+        <ul id="ranking-list">
+            <!-- Ranking items will be injected here -->
+        </ul>
+    </div>
+
+    <button onclick="location.reload()" style="margin-top: 25px;">Jugar de nuevo 🔄</button>
+</div>
 
 <script>
-    // Create stars background
+    // Generar fondo de estrellas
     const starsContainer = document.getElementById('stars-container');
     for (let i = 0; i < 50; i++) {
         const star = document.createElement('div');
@@ -248,6 +306,7 @@
         starsContainer.appendChild(star);
     }
 
+    let playerName = "";
     let currentAns, score = 0, count = 1, seconds = 0, timerInterval;
     const totalQuestions = 10;
     let synth = window.speechSynthesis;
@@ -272,6 +331,33 @@
         setTimeout(() => pop.remove(), 1000);
     }
 
+    // --- Lógica de Inicio ---
+    function startGame() {
+        const nameInput = document.getElementById('player-name').value.trim();
+        if (!nameInput) {
+            playSound("Por favor, dime tu nombre mágico", 1.2);
+            document.getElementById('start-screen').classList.add('shake');
+            setTimeout(() => document.getElementById('start-screen').classList.remove('shake'), 500);
+            return;
+        }
+        
+        playerName = nameInput;
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('game-container').style.display = 'block';
+        
+        playSound(`¡Prepara tu varita, ${playerName}!`, 1.2);
+        
+        // Empezar juego
+        score = 0; count = 1; seconds = 0;
+        startTimer();
+        generateQuestion();
+    }
+
+    document.getElementById('player-name').addEventListener('keypress', (e) => { 
+        if(e.key === 'Enter') startGame(); 
+    });
+
+    // --- Lógica del Juego ---
     function startTimer() {
         timerInterval = setInterval(() => { 
             seconds++; 
@@ -284,32 +370,46 @@
         const op = ops[Math.floor(Math.random() * ops.length)];
         let n1, n2;
 
-        // 4th Grade Math logic
+        // Dificultad para niño de 9 años (4to / 5to grado)
         if (op === '+') { 
-            n1 = Math.floor(Math.random() * 800) + 100; // 3 digits
-            n2 = Math.floor(Math.random() * 800) + 100; // 3 digits
+            // Sumas un poco más grandes (hasta 3 dígitos)
+            n1 = Math.floor(Math.random() * 800) + 100; // 100 a 899
+            n2 = Math.floor(Math.random() * 800) + 100; // 100 a 899
             currentAns = n1 + n2; 
         }
         else if (op === '-') { 
-            n1 = Math.floor(Math.random() * 800) + 200; // 3 digits
-            n2 = Math.floor(Math.random() * (n1 - 100)) + 50; // smaller
+            // Restas de 3 dígitos garantizando resultado positivo
+            n1 = Math.floor(Math.random() * 800) + 200; // 200 a 999
+            n2 = Math.floor(Math.random() * (n1 - 100)) + 50; // Siempre menor que n1
             currentAns = n1 - n2; 
         }
         else if (op === '*') { 
-            n1 = Math.floor(Math.random() * 11) + 2;    // 2 to 12
-            n2 = Math.floor(Math.random() * 11) + 2;    // 2 to 12
+            if (Math.random() > 0.5) {
+                // Multiplicaciones clásicas hasta el 12x12
+                n1 = Math.floor(Math.random() * 11) + 2;    // 2 a 12
+                n2 = Math.floor(Math.random() * 11) + 2;    // 2 a 12
+            } else {
+                // Multiplicación de 2 dígitos por 1 dígito (ej. 34 x 6)
+                n1 = Math.floor(Math.random() * 40) + 10;   // 10 a 49
+                n2 = Math.floor(Math.random() * 8) + 2;     // 2 a 9
+            }
+            if (Math.random() > 0.5) [n1, n2] = [n2, n1]; // Aleatorizar orden
             currentAns = n1 * n2; 
         }
         else { 
-            currentAns = Math.floor(Math.random() * 12) + 1; // Ans 1-12
-            n2 = Math.floor(Math.random() * 9) + 2;          // Divisor 2-10
-            n1 = currentAns * n2;                            // Dividend
+            // Divisiones exactas un poco más difíciles
+            currentAns = Math.floor(Math.random() * 20) + 2; // Resultado de 2 a 21
+            n2 = Math.floor(Math.random() * 11) + 2;         // Divisor de 2 a 12
+            n1 = currentAns * n2;                            // Dividendo
         }
 
         const opSymbol = op === '*' ? 'x' : (op === '/' ? '÷' : op);
         document.getElementById('question').innerText = `${n1} ${opSymbol} ${n2}`;
         document.getElementById('answer').value = "";
-        document.getElementById('answer').focus();
+        
+        // Truco para asegurar que el input reciba el foco en móviles y PC
+        setTimeout(() => document.getElementById('answer').focus(), 50);
+        
         document.getElementById('wizard-avatar').innerText = "🧙‍♂️";
         updateProgressBar();
     }
@@ -330,7 +430,7 @@
             score++;
             fb.innerHTML = "<span style='color:var(--success)'>¡Correcto! ✨🌟</span>";
             document.getElementById('wizard-avatar').innerText = "🧙‍♂️✨";
-            playSound("¡Excelente hechizo!", 1.5);
+            playSound("¡Excelente!", 1.5);
             
             const rect = container.getBoundingClientRect();
             createMagicPop(rect.left + rect.width/2, rect.top + rect.height/2, "⭐");
@@ -339,8 +439,8 @@
             
             if(window.confetti) {
                 confetti({
-                    particleCount: 50,
-                    spread: 60,
+                    particleCount: 40,
+                    spread: 50,
                     origin: { y: 0.6 },
                     colors: ['#f1c40f', '#9b59b6', '#2ecc71']
                 });
@@ -349,14 +449,14 @@
             setTimeout(nextQuestion, 1200);
         } else {
             const isHigher = userVal < currentAns;
-            fb.innerHTML = `<span style='color:var(--error)'>¡Falla! Prueba con un número más ${isHigher ? 'alto ⬆️' : 'bajo ⬇️'}</span>`;
+            fb.innerHTML = `<span style='color:var(--error)'>¡Prueba un poco más ${isHigher ? 'alto ⬆️' : 'bajo ⬇️'}!</span>`;
             document.getElementById('wizard-avatar').innerText = "🧙‍♂️💦";
             playSound("Ups, un poco más " + (isHigher ? "alto" : "bajo"), 0.8);
             
             container.classList.add('shake');
             setTimeout(() => container.classList.remove('shake'), 500);
             document.getElementById('answer').value = ""; 
-            document.getElementById('answer').focus();
+            setTimeout(() => document.getElementById('answer').focus(), 50);
         }
     }
 
@@ -373,52 +473,73 @@
         }
     }
 
+    document.getElementById('answer').addEventListener('keypress', (e) => { 
+        if(e.key === 'Enter') checkAnswer(); 
+    });
+
+    // --- Lógica de Resultados y Ranking ---
     function showResults() {
-        document.getElementById('quiz-section').style.display = 'none';
+        document.getElementById('game-container').style.display = 'none';
         document.getElementById('score-board').style.display = 'block';
         
-        document.getElementById('final-msg').innerText = `¡Completaste ${score} hechizos correctos! ⭐`;
-        document.getElementById('time-result').innerText = `Tiempo mágico: ${seconds} segundos ⏱️`;
-        playSound(`¡Felicidades! Lograste 10 puntos en ${seconds} segundos`, 1.2);
+        document.getElementById('final-msg').innerText = `¡${score} hechizos correctos! ⭐`;
+        document.getElementById('time-result').innerText = `Tiempo: ${seconds} segundos ⏱️`;
+        playSound(`¡Terminaste ${playerName}! Conseguiste ${score} puntos`, 1.2);
         
         if(window.confetti) {
             var duration = 3000;
             var end = Date.now() + duration;
 
             (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#f1c40f', '#9b59b6', '#2ecc71', '#3498db']
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#f1c40f', '#9b59b6', '#2ecc71', '#3498db']
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#f1c40f', '#9b59b6', '#2ecc71', '#3498db'] });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#f1c40f', '#9b59b6', '#2ecc71', '#3498db'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
+
+        saveAndShowRanking(score, seconds);
     }
 
-    // Start
-    window.onload = () => {
-        // Only greeting text once
-        // playSound("Bienvenido a la academia mágica de matemáticas", 1);
-        startTimer();
-        generateQuestion();
-    };
+    function saveAndShowRanking(finalScore, finalTime) {
+        const today = new Date().toLocaleDateString('es-ES'); // Fecha local
+        let ranking = JSON.parse(localStorage.getItem('magiaMatematicaRanking')) || [];
+        
+        // Agregar jugada actual
+        ranking.push({ name: playerName, score: finalScore, time: finalTime, date: today });
+        
+        // Ordenar por puntaje (descendente), luego por tiempo (ascendente)
+        ranking.sort((a, b) => {
+            if (b.score !== a.score) return b.score - a.score;
+            return a.time - b.time;
+        });
+        
+        // Guardar en localStorage
+        localStorage.setItem('magiaMatematicaRanking', JSON.stringify(ranking));
+        
+        // Renderizar Top 5 del día actual
+        const rankingList = document.getElementById('ranking-list');
+        rankingList.innerHTML = '';
+        
+        let todayRanking = ranking.filter(r => r.date === today).slice(0, 5);
+        
+        todayRanking.forEach((entry, index) => {
+            const li = document.createElement('li');
+            let medalla = '⭐';
+            if(index === 0) medalla = '🥇';
+            if(index === 1) medalla = '🥈';
+            if(index === 2) medalla = '🥉';
+            
+            // Destacar si es el jugador actual (última partida jugada)
+            const isCurrentPlay = entry.name === playerName && entry.score === finalScore && entry.time === finalTime ? 'font-weight: bold; color: var(--secondary);' : '';
+            
+            li.innerHTML = `
+                <span style="${isCurrentPlay}">${medalla} ${entry.name}</span> 
+                <span style="${isCurrentPlay}">${entry.score} pts <small>(${entry.time}s)</small></span>
+            `;
+            rankingList.appendChild(li);
+        });
+    }
 
-    document.getElementById('answer').addEventListener('keypress', (e) => { 
-        if(e.key === 'Enter') checkAnswer(); 
-    });
 </script>
 </body>
 </html>

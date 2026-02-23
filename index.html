@@ -1,833 +1,1189 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Academia Mágica ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"
+      defer
+    ></script>
     <style>
-        :root {
-            --primary: #9b59b6;
-            --secondary: #f1c40f;
-            --success: #2ecc71;
-            --error: #e74c3c;
-            --math: #3498db;
-            --english: #e67e22;
-            --geo: #1abc9c;
-            --bg-dark: #2c3e50;
-        }
-        
-        body {
-            font-family: 'Fredoka', sans-serif;
-            background: radial-gradient(circle at center, #3b2c5e 0%, #1a1025 100%);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow-x: hidden;
-            position: relative;
-        }
+      :root {
+        --primary: #9b59b6;
+        --secondary: #f1c40f;
+        --success: #2ecc71;
+        --error: #e74c3c;
+        --math: #3498db;
+        --english: #e67e22;
+        --geo: #1abc9c;
+        --bg-dark: #2c3e50;
+      }
 
-        .stars {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle infinite alternate;
-        }
+      body {
+        font-family: "Fredoka", sans-serif;
+        background: radial-gradient(circle at center, #3b2c5e 0%, #1a1025 100%);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        overflow-x: hidden;
+        position: relative;
+      }
 
-        @keyframes twinkle {
-            0% { opacity: 0.2; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px white; }
-        }
+      .stars {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 30px;
-            box-shadow: 0 0 40px rgba(155, 89, 182, 0.5), inset 0 0 20px rgba(255,255,255,0.2);
-            text-align: center;
-            width: 90%;
-            max-width: 550px;
-            border: 2px solid rgba(255,255,255,0.3);
-            z-index: 10;
-            position: relative;
-            margin: 20px;
-        }
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle infinite alternate;
+      }
 
-        h1 {
-            color: var(--secondary);
-            font-size: 2.2rem;
-            margin-top: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      @keyframes twinkle {
+        0% {
+          opacity: 0.2;
+          transform: scale(0.8);
         }
+        100% {
+          opacity: 1;
+          transform: scale(1.2);
+          box-shadow: 0 0 10px white;
+        }
+      }
 
-        h2 {
-            color: #fff;
-            margin-top: 0;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2.5rem;
+        border-radius: 30px;
+        box-shadow:
+          0 0 40px rgba(155, 89, 182, 0.5),
+          inset 0 0 20px rgba(255, 255, 255, 0.2);
+        text-align: center;
+        width: 90%;
+        max-width: 550px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        z-index: 10;
+        position: relative;
+        margin: 20px;
+      }
 
-        .avatar {
-            font-size: 4rem;
-            margin: -50px auto 10px;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            width: 100px;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            animation: float 3s ease-in-out infinite;
-        }
+      h1 {
+        color: var(--secondary);
+        font-size: 2.2rem;
+        margin-top: 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
+      h2 {
+        color: #fff;
+        margin-top: 0;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
 
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            background: rgba(0,0,0,0.3);
-            padding: 10px 20px;
-            border-radius: 20px;
-        }
+      .avatar {
+        font-size: 4rem;
+        margin: -50px auto 10px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.2) 0%,
+          transparent 70%
+        );
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        animation: float 3s ease-in-out infinite;
+      }
 
-        #question {
-            font-size: 3rem;
-            margin: 20px 0;
-            color: #fff;
-            text-shadow: 0 0 15px var(--primary), 0 0 20px var(--primary);
-            font-weight: 600;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
         }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
 
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
+      .stats {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
+        border-radius: 20px;
+      }
 
-        input {
-            width: 80%;
-            max-width: 300px;
-            padding: 15px;
-            font-size: 1.8rem;
-            border: 4px solid var(--primary);
-            border-radius: 20px;
-            text-align: center;
-            outline: none;
-            background: rgba(255,255,255,0.9);
-            color: #333;
-            font-family: inherit;
-            box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
-            transition: all 0.3s;
-        }
+      #question {
+        font-size: 3rem;
+        margin: 20px 0;
+        color: #fff;
+        text-shadow:
+          0 0 15px var(--primary),
+          0 0 20px var(--primary);
+        font-weight: 600;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        input:focus {
-            border-color: var(--secondary);
-            box-shadow: 0 0 20px var(--secondary), inset 0 3px 5px rgba(0,0,0,0.2);
-            transform: scale(1.05);
-        }
-        
-        /* Opciones Múltiples (para inglés y capitales) */
-        .options-grid {
-            display: none;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        .option-btn {
-            background: rgba(255,255,255,0.15);
-            border: 2px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 15px 10px;
-            font-size: 1.2rem;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 0;
-            box-shadow: none;
-            width: 100%;
-        }
-        
-        .option-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-3px);
-            border-color: var(--secondary);
-        }
-        
-        .option-btn:active {
-            transform: translateY(1px);
-        }
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
 
-        /* Botones Principales */
-        .main-btn {
-            background: linear-gradient(to bottom, #f1c40f, #f39c12);
-            color: #fff;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.4rem;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 6px 0 #d68910, 0 15px 20px rgba(0,0,0,0.4);
-            transition: all 0.1s;
-            width: 80%;
-            max-width: 300px;
-            font-family: inherit;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
+      input {
+        width: 80%;
+        max-width: 300px;
+        padding: 15px;
+        font-size: 1.8rem;
+        border: 4px solid var(--primary);
+        border-radius: 20px;
+        text-align: center;
+        outline: none;
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+        font-family: inherit;
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s;
+      }
 
-        .main-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 0 0 #d68910, 0 5px 5px rgba(0,0,0,0.4);
-        }
+      input:focus {
+        border-color: var(--secondary);
+        box-shadow:
+          0 0 20px var(--secondary),
+          inset 0 3px 5px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+      }
 
-        /* Botones de Selección de Modo */
-        .mode-selector {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin: 25px 0;
-            width: 100%;
-        }
+      /* Opciones Múltiples (para inglés y capitales) */
+      .options-grid {
+        display: none;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        width: 100%;
+        margin-top: 10px;
+      }
 
-        .mode-btn {
-            padding: 15px;
-            font-size: 1.3rem;
-            border-radius: 20px;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s;
-            box-shadow: 0 5px 0 rgba(0,0,0,0.3);
-        }
-        
-        .mode-btn:active {
-            transform: translateY(5px);
-            box-shadow: 0 0 0 rgba(0,0,0,0.3);
-        }
+      .option-btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 15px 10px;
+        font-size: 1.2rem;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 0;
+        box-shadow: none;
+        width: 100%;
+      }
 
-        .mode-math { background: linear-gradient(135deg, #3498db, #2980b9); box-shadow: 0 5px 0 #1f618d; }
-        .mode-english { background: linear-gradient(135deg, #e67e22, #d35400); box-shadow: 0 5px 0 #a04000; }
-        .mode-geo { background: linear-gradient(135deg, #1abc9c, #16a085); box-shadow: 0 5px 0 #117a65; }
+      .option-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        border-color: var(--secondary);
+      }
 
-        #feedback {
-            margin-top: 20px;
-            font-size: 1.4rem;
-            font-weight: bold;
-            min-height: 35px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
+      .option-btn:active {
+        transform: translateY(1px);
+      }
 
-        .shake { animation: shake 0.5s; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-        }
+      /* Botones Principales */
+      .main-btn {
+        background: linear-gradient(to bottom, #f1c40f, #f39c12);
+        color: #fff;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.4rem;
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 20px;
+        box-shadow:
+          0 6px 0 #d68910,
+          0 15px 20px rgba(0, 0, 0, 0.4);
+        transition: all 0.1s;
+        width: 80%;
+        max-width: 300px;
+        font-family: inherit;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
 
-        .magic-pop {
-            position: absolute;
-            pointer-events: none;
-            animation: pop 1s ease-out forwards;
-            font-size: 2rem;
-            z-index: 20;
-        }
+      .main-btn:active {
+        transform: translateY(6px);
+        box-shadow:
+          0 0 0 #d68910,
+          0 5px 5px rgba(0, 0, 0, 0.4);
+      }
 
-        @keyframes pop {
-            0% { transform: scale(0) translateY(0); opacity: 1; }
-            100% { transform: scale(1.5) translateY(-50px); opacity: 0; }
-        }
-        
-        .progress-bar-container {
-            width: 100%;
-            height: 12px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        
-        #progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--secondary), #f39c12);
-            transition: width 0.3s ease;
-        }
+      /* Botones de Selección de Modo */
+      .mode-selector {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin: 25px 0;
+        width: 100%;
+      }
 
-        #ranking-container {
-            margin-top: 20px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 15px;
-            padding: 15px;
-        }
+      .mode-btn {
+        padding: 15px;
+        font-size: 1.3rem;
+        border-radius: 20px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.2s;
+        box-shadow: 0 5px 0 rgba(0, 0, 0, 0.3);
+      }
 
-        #ranking-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-        }
+      .mode-btn:active {
+        transform: translateY(5px);
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
+      }
 
-        #ranking-list li {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 1.1rem;
-            background: rgba(255,255,255,0.05);
-            margin-bottom: 5px;
-            border-radius: 8px;
-        }
+      .mode-math {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        box-shadow: 0 5px 0 #1f618d;
+      }
+      .mode-english {
+        background: linear-gradient(135deg, #e67e22, #d35400);
+        box-shadow: 0 5px 0 #a04000;
+      }
+      .mode-geo {
+        background: linear-gradient(135deg, #1abc9c, #16a085);
+        box-shadow: 0 5px 0 #117a65;
+      }
 
-        #ranking-list li:last-child { margin-bottom: 0; }
-        
-        .mode-badge {
-            font-size: 0.8rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 5px;
-            vertical-align: middle;
-        }
+      #feedback {
+        margin-top: 20px;
+        font-size: 1.4rem;
+        font-weight: bold;
+        min-height: 35px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
 
-        .back-btn {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid rgba(255,255,255,0.4);
-            color: white;
-            padding: 8px 15px;
-            font-size: 1.1rem;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            box-shadow: none;
-            width: auto;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            z-index: 100;
+      .shake {
+        animation: shake 0.5s;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
         }
-        .back-btn:hover { background: rgba(255,255,255,0.4); transform: translateY(-2px); }
-        .back-btn:active { transform: translateY(0); }
-        
+        25% {
+          transform: translateX(-10px);
+        }
+        50% {
+          transform: translateX(10px);
+        }
+        75% {
+          transform: translateX(-10px);
+        }
+      }
+
+      .magic-pop {
+        position: absolute;
+        pointer-events: none;
+        animation: pop 1s ease-out forwards;
+        font-size: 2rem;
+        z-index: 20;
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(0) translateY(0);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.5) translateY(-50px);
+          opacity: 0;
+        }
+      }
+
+      .progress-bar-container {
+        width: 100%;
+        height: 12px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+
+      #progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--secondary), #f39c12);
+        transition: width 0.3s ease;
+      }
+
+      #ranking-container {
+        margin-top: 20px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+        padding: 15px;
+      }
+
+      #ranking-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+      }
+
+      #ranking-list li {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1.1rem;
+        background: rgba(255, 255, 255, 0.05);
+        margin-bottom: 5px;
+        border-radius: 8px;
+      }
+
+      #ranking-list li:last-child {
+        margin-bottom: 0;
+      }
+
+      .mode-badge {
+        font-size: 0.8rem;
+        padding: 2px 6px;
+        border-radius: 10px;
+        margin-left: 5px;
+        vertical-align: middle;
+      }
+
+      .back-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        color: white;
+        padding: 8px 15px;
+        font-size: 1.1rem;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        box-shadow: none;
+        width: auto;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        z-index: 100;
+      }
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+      }
+      .back-btn:active {
+        transform: translateY(0);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="stars" id="stars-container"></div>
 
-<div class="stars" id="stars-container"></div>
+    <!-- PANTALLA DE INICIO -->
+    <div id="start-screen" class="glass-panel">
+      <div class="avatar" id="start-avatar">🏰</div>
+      <h1 id="game-title">Academia Mágica</h1>
+      <p style="font-size: 1.2rem; margin-bottom: 15px">
+        ¡Bienvenido aprendiz! Ingresa tu nombre y elige la materia que quieres
+        estudiar hoy.
+      </p>
 
-<!-- PANTALLA DE INICIO -->
-<div id="start-screen" class="glass-panel">
-    <div class="avatar" id="start-avatar">🏰</div>
-    <h1 id="game-title">Academia Mágica</h1>
-    <p style="font-size: 1.2rem; margin-bottom: 15px;">¡Bienvenido aprendiz! Ingresa tu nombre y elige la materia que quieres estudiar hoy.</p>
-    
-    <input type="text" id="player-name" placeholder="Tu nombre..." autocomplete="off" style="font-size: 1.5rem; width:80%;">
-    
-    <div class="mode-selector">
+      <input
+        type="text"
+        id="player-name"
+        placeholder="Tu nombre..."
+        autocomplete="off"
+        style="font-size: 1.5rem; width: 80%"
+      />
+
+      <div class="mode-selector">
         <button class="mode-btn mode-math" onclick="startGame('math')">
-            🔢 Magia Matemática
+          🔢 Magia Matemática
         </button>
         <button class="mode-btn mode-english" onclick="startGame('english')">
-            🔤 Conjuros en Inglés
+          🔤 Conjuros en Inglés
         </button>
         <button class="mode-btn mode-geo" onclick="startGame('geo')">
-            🌍 Explorador del Mundo
+          🌍 Explorador del Mundo
         </button>
+      </div>
     </div>
-</div>
 
-<!-- PANTALLA DE JUEGO -->
-<div id="game-container" class="glass-panel" style="display: none;">
-    <button class="back-btn" onclick="returnToMenu()" title="Volver al Inicio">🏠 Volver</button>
-    <div id="quiz-section">
+    <!-- PANTALLA DE JUEGO -->
+    <div id="game-container" class="glass-panel" style="display: none">
+      <button
+        class="back-btn"
+        onclick="returnToMenu()"
+        title="Volver al Inicio"
+      >
+        🏠 Volver
+      </button>
+      <div id="quiz-section">
         <div class="avatar" id="wizard-avatar">🧙‍♂️</div>
         <h1 id="game-title-active">Magia Matemática</h1>
-        
+
         <div class="progress-bar-container">
-            <div id="progress-bar"></div>
+          <div id="progress-bar"></div>
         </div>
 
         <div class="stats">
-            <span>✨ Nivel: <b id="current-idx">1</b>/10</span>
-            <span>⏱️ <b id="timer">0</b>s</span>
+          <span>✨ Nivel: <b id="current-idx">1</b>/10</span>
+          <span>⏱️ <b id="timer">0</b>s</span>
         </div>
 
         <div id="question">--</div>
-        
-        <div class="input-group">
-            <!-- Matemáticas: Input libre -->
-            <input type="number" id="answer" placeholder="?" style="display: none;">
-            <button id="btn-submit" class="main-btn" onclick="checkAnswer()" style="display: none;">¡Lanzar Hechizo!</button>
-            
-            <!-- Inglés/Geo: Botones Flexibles -->
-            <div id="options-container" class="options-grid">
-                <button class="option-btn" onclick="checkMultipleChoice(0)" id="opt-0">A</button>
-                <button class="option-btn" onclick="checkMultipleChoice(1)" id="opt-1">B</button>
-                <button class="option-btn" onclick="checkMultipleChoice(2)" id="opt-2">C</button>
-                <button class="option-btn" onclick="checkMultipleChoice(3)" id="opt-3">D</button>
-            </div>
-        </div>
-        
-        <div id="feedback"></div>
-    </div>
-</div>
 
-<!-- PANTALLA DE RESULTADOS Y RANKING -->
-<div id="score-board" class="glass-panel" style="display: none;">
-    <div class="avatar">🎓</div>
-    <h1>¡Misión Cumplida!</h1>
-    <p id="final-msg" style="font-size: 1.8rem; color: var(--secondary); margin: 15px 0;"></p>
-    <p id="time-result" style="font-size: 1.3rem; margin-bottom: 15px;"></p>
-    
-    <div id="ranking-container">
+        <div class="input-group">
+          <!-- Matemáticas: Input libre -->
+          <input
+            type="number"
+            id="answer"
+            placeholder="?"
+            style="display: none"
+          />
+          <button
+            id="btn-submit"
+            class="main-btn"
+            onclick="checkAnswer()"
+            style="display: none"
+          >
+            ¡Lanzar Hechizo!
+          </button>
+
+          <!-- Inglés/Geo: Botones Flexibles -->
+          <div id="options-container" class="options-grid">
+            <button
+              class="option-btn"
+              onclick="checkMultipleChoice(0)"
+              id="opt-0"
+            >
+              A
+            </button>
+            <button
+              class="option-btn"
+              onclick="checkMultipleChoice(1)"
+              id="opt-1"
+            >
+              B
+            </button>
+            <button
+              class="option-btn"
+              onclick="checkMultipleChoice(2)"
+              id="opt-2"
+            >
+              C
+            </button>
+            <button
+              class="option-btn"
+              onclick="checkMultipleChoice(3)"
+              id="opt-3"
+            >
+              D
+            </button>
+          </div>
+        </div>
+
+        <div id="feedback"></div>
+      </div>
+    </div>
+
+    <!-- PANTALLA DE RESULTADOS Y RANKING -->
+    <div id="score-board" class="glass-panel" style="display: none">
+      <div class="avatar">🎓</div>
+      <h1>¡Misión Cumplida!</h1>
+      <p
+        id="final-msg"
+        style="font-size: 1.8rem; color: var(--secondary); margin: 15px 0"
+      ></p>
+      <p id="time-result" style="font-size: 1.3rem; margin-bottom: 15px"></p>
+
+      <div id="ranking-container">
         <h2>🏆 Salón de la Fama Diario</h2>
         <ul id="ranking-list">
-            <!-- Ranking items will be injected here -->
+          <!-- Ranking items will be injected here -->
         </ul>
+      </div>
+
+      <button
+        class="main-btn"
+        onclick="location.reload()"
+        style="margin-top: 25px; width: 100%"
+      >
+        Volver a la Academia 🏰
+      </button>
     </div>
 
-    <button class="main-btn" onclick="location.reload()" style="margin-top: 25px; width: 100%;">Volver a la Academia 🏰</button>
-</div>
+    <script>
+      // --- CONFIGURACIÓN DE CORREO ---
+      // Pon aquí tu correo para recibir las estadísticas.
+      // (La primera vez que se envíe un correo, FormSubmit te pedirá confirmación en esa cuenta).
+      const EMAIL_DESTINO = "nicosismonda@gmail.com";
 
-<script>
-    // Datos: Preguntas de Inglés Básico (4to grado)
-    const englishQuestions = [
-        { q: "¿Cómo se dice 'Manzana'?", options: ["Apple", "Orange", "Banana", "Grape"], correct: 0 },
-        { q: "¿Qué color es 'Yellow'?", options: ["Rojo", "Verde", "Amarillo", "Azul"], correct: 2 },
-        { q: "Traduce: 'Dog'", options: ["Gato", "Pájaro", "Perro", "Pez"], correct: 2 },
-        { q: "¿Qué número es 'Eight'?", options: ["3", "8", "18", "80"], correct: 1 },
-        { q: "¿Cómo saludas por la mañana?", options: ["Good night", "Good evening", "Good morning", "Goodbye"], correct: 2 },
-        { q: "Traduce: 'Cat'", options: ["Perro", "Ratón", "Gato", "Conejo"], correct: 2 },
-        { q: "¿Qué significa 'Brother'?", options: ["Hermano", "Padre", "Amigo", "Tío"], correct: 0 },
-        { q: "¿Cómo se dice 'Gracias'?", options: ["Please", "Sorry", "Hello", "Thank you"], correct: 3 },
-        { q: "Traduce: 'House'", options: ["Casa", "Árbol", "Coche", "Escuela"], correct: 0 },
-        { q: "¿Qué color es 'Blue'?", options: ["Blanco", "Negro", "Azul", "Rojo"], correct: 2 },
-        { q: "¿Qué día es 'Monday'?", options: ["Lunes", "Martes", "Viernes", "Domingo"], correct: 0 },
-        { q: "¿Cómo se dice 'Gato'?", options: ["Dog", "Cat", "Bird", "Fish"], correct: 1 },
-        { q: "¿Qué significa 'Water'?", options: ["Fuego", "Tierra", "Agua", "Aire"], correct: 2 },
-        { q: "Traduce: 'Book'", options: ["Lápiz", "Cuaderno", "Libro", "Mochila"], correct: 2 },
-        { q: "¿Cuál no es un animal?", options: ["Tiger", "Lion", "Chair", "Bear"], correct: 2 }
-    ];
+      // Datos: Preguntas de Inglés Básico (4to grado)
+      const englishQuestions = [
+        {
+          q: "¿Cómo se dice 'Manzana'?",
+          options: ["Apple", "Orange", "Banana", "Grape"],
+          correct: 0,
+        },
+        {
+          q: "¿Qué color es 'Yellow'?",
+          options: ["Rojo", "Verde", "Amarillo", "Azul"],
+          correct: 2,
+        },
+        {
+          q: "Traduce: 'Dog'",
+          options: ["Gato", "Pájaro", "Perro", "Pez"],
+          correct: 2,
+        },
+        {
+          q: "¿Qué número es 'Eight'?",
+          options: ["3", "8", "18", "80"],
+          correct: 1,
+        },
+        {
+          q: "¿Cómo saludas por la mañana?",
+          options: ["Good night", "Good evening", "Good morning", "Goodbye"],
+          correct: 2,
+        },
+        {
+          q: "Traduce: 'Cat'",
+          options: ["Perro", "Ratón", "Gato", "Conejo"],
+          correct: 2,
+        },
+        {
+          q: "¿Qué significa 'Brother'?",
+          options: ["Hermano", "Padre", "Amigo", "Tío"],
+          correct: 0,
+        },
+        {
+          q: "¿Cómo se dice 'Gracias'?",
+          options: ["Please", "Sorry", "Hello", "Thank you"],
+          correct: 3,
+        },
+        {
+          q: "Traduce: 'House'",
+          options: ["Casa", "Árbol", "Coche", "Escuela"],
+          correct: 0,
+        },
+        {
+          q: "¿Qué color es 'Blue'?",
+          options: ["Blanco", "Negro", "Azul", "Rojo"],
+          correct: 2,
+        },
+        {
+          q: "¿Qué día es 'Monday'?",
+          options: ["Lunes", "Martes", "Viernes", "Domingo"],
+          correct: 0,
+        },
+        {
+          q: "¿Cómo se dice 'Gato'?",
+          options: ["Dog", "Cat", "Bird", "Fish"],
+          correct: 1,
+        },
+        {
+          q: "¿Qué significa 'Water'?",
+          options: ["Fuego", "Tierra", "Agua", "Aire"],
+          correct: 2,
+        },
+        {
+          q: "Traduce: 'Book'",
+          options: ["Lápiz", "Cuaderno", "Libro", "Mochila"],
+          correct: 2,
+        },
+        {
+          q: "¿Cuál no es un animal?",
+          options: ["Tiger", "Lion", "Chair", "Bear"],
+          correct: 2,
+        },
+      ];
 
-    // Datos: Preguntas de Capitales (América, Europa Básicas)
-    const geoQuestions = [
-        { q: "Capital de Argentina", options: ["Rosario", "Córdoba", "Buenos Aires", "Mendoza"], correct: 2 },
-        { q: "Capital de Brasil", options: ["Río de Janeiro", "Brasilia", "San Pablo", "Salvador"], correct: 1 },
-        { q: "Capital de España", options: ["Barcelona", "Madrid", "Sevilla", "Valencia"], correct: 1 },
-        { q: "Capital de Francia", options: ["Londres", "Roma", "París", "Berlín"], correct: 2 },
-        { q: "Capital de Italia", options: ["Roma", "Venecia", "Milán", "Nápoles"], correct: 0 },
-        { q: "Capital de Estados Unidos", options: ["Nueva York", "Los Ángeles", "Miami", "Washington D.C."], correct: 3 },
-        { q: "Capital de Uruguay", options: ["Punta del Este", "Montevideo", "Colonia", "Salto"], correct: 1 },
-        { q: "Capital de Chile", options: ["Valparaíso", "Santiago", "Concepción", "Antofagasta"], correct: 1 },
-        { q: "Capital de Perú", options: ["Cusco", "Arequipa", "Lima", "Trujillo"], correct: 2 },
-        { q: "Capital de México", options: ["Cancún", "Guadalajara", "Ciudad de México", "Monterrey"], correct: 2 },
-        { q: "Capital de Inglaterra", options: ["Manchester", "Liverpool", "Londres", "Oxford"], correct: 2 },
-        { q: "Capital de Colombia", options: ["Medellín", "Cali", "Bogotá", "Cartagena"], correct: 2 },
-        { q: "Capital de Alemania", options: ["Múnich", "Berlín", "Fráncfort", "Hamburgo"], correct: 1 },
-        { q: "Capital de Japón", options: ["Kioto", "Osaka", "Tokio", "Hiroshima"], correct: 2 },
-        { q: "Capital de Rusia", options: ["San Petersburgo", "Moscú", "Kazán", "Sochi"], correct: 1 }
-    ];
+      // Datos: Preguntas de Capitales (América, Europa Básicas)
+      const geoQuestions = [
+        {
+          q: "Capital de Argentina",
+          options: ["Rosario", "Córdoba", "Buenos Aires", "Mendoza"],
+          correct: 2,
+        },
+        {
+          q: "Capital de Brasil",
+          options: ["Río de Janeiro", "Brasilia", "San Pablo", "Salvador"],
+          correct: 1,
+        },
+        {
+          q: "Capital de España",
+          options: ["Barcelona", "Madrid", "Sevilla", "Valencia"],
+          correct: 1,
+        },
+        {
+          q: "Capital de Francia",
+          options: ["Londres", "Roma", "París", "Berlín"],
+          correct: 2,
+        },
+        {
+          q: "Capital de Italia",
+          options: ["Roma", "Venecia", "Milán", "Nápoles"],
+          correct: 0,
+        },
+        {
+          q: "Capital de Estados Unidos",
+          options: ["Nueva York", "Los Ángeles", "Miami", "Washington D.C."],
+          correct: 3,
+        },
+        {
+          q: "Capital de Uruguay",
+          options: ["Punta del Este", "Montevideo", "Colonia", "Salto"],
+          correct: 1,
+        },
+        {
+          q: "Capital de Chile",
+          options: ["Valparaíso", "Santiago", "Concepción", "Antofagasta"],
+          correct: 1,
+        },
+        {
+          q: "Capital de Perú",
+          options: ["Cusco", "Arequipa", "Lima", "Trujillo"],
+          correct: 2,
+        },
+        {
+          q: "Capital de México",
+          options: ["Cancún", "Guadalajara", "Ciudad de México", "Monterrey"],
+          correct: 2,
+        },
+        {
+          q: "Capital de Inglaterra",
+          options: ["Manchester", "Liverpool", "Londres", "Oxford"],
+          correct: 2,
+        },
+        {
+          q: "Capital de Colombia",
+          options: ["Medellín", "Cali", "Bogotá", "Cartagena"],
+          correct: 2,
+        },
+        {
+          q: "Capital de Alemania",
+          options: ["Múnich", "Berlín", "Fráncfort", "Hamburgo"],
+          correct: 1,
+        },
+        {
+          q: "Capital de Japón",
+          options: ["Kioto", "Osaka", "Tokio", "Hiroshima"],
+          correct: 2,
+        },
+        {
+          q: "Capital de Rusia",
+          options: ["San Petersburgo", "Moscú", "Kazán", "Sochi"],
+          correct: 1,
+        },
+      ];
 
-    // Generar fondo de estrellas
-    const starsContainer = document.getElementById('stars-container');
-    for (let i = 0; i < 50; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.width = Math.random() * 4 + 1 + 'px';
+      // Generar fondo de estrellas
+      const starsContainer = document.getElementById("stars-container");
+      for (let i = 0; i < 50; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.style.width = Math.random() * 4 + 1 + "px";
         star.style.height = star.style.width;
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDuration = Math.random() * 3 + 1 + 's';
-        star.style.animationDelay = Math.random() * 2 + 's';
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.animationDuration = Math.random() * 3 + 1 + "s";
+        star.style.animationDelay = Math.random() * 2 + "s";
         starsContainer.appendChild(star);
-    }
+      }
 
-    let playerName = "";
-    let gameMode = ""; // 'math', 'english', 'geo'
-    let currentAns = null; // Respuesta matemática
-    let currentQ = null; // Objeto pregunta (ingles/geo)
-    let questionsList = []; // Array mezclado de preguntas elegidas
-    let score = 0, count = 1, seconds = 0, timerInterval;
-    const totalQuestions = 10;
-    let synth = window.speechSynthesis;
+      let playerName = "";
+      let gameMode = ""; // 'math', 'english', 'geo'
+      let currentAns = null; // Respuesta matemática
+      let currentQ = null; // Objeto pregunta (ingles/geo)
+      let questionsList = []; // Array mezclado de preguntas elegidas
+      let score = 0,
+        count = 1,
+        seconds = 0,
+        timerInterval;
+      const totalQuestions = 10;
+      let synth = window.speechSynthesis;
 
-    function playSound(text, pitch = 1.2, rate = 1.1) {
+      function playSound(text, pitch = 1.2, rate = 1.1) {
         if (!synth) return;
         synth.cancel();
         let utter = new SpeechSynthesisUtterance(text);
         utter.pitch = pitch;
         utter.rate = rate;
-        utter.lang = 'es-ES';
+        utter.lang = "es-ES";
         // Leer inglés si la pregunta es de inglés y estamos leyendo opciones, pero para feedback general mejor en español
         synth.speak(utter);
-    }
+      }
 
-    function createMagicPop(x, y, emoji) {
-        const pop = document.createElement('div');
-        pop.className = 'magic-pop';
+      function createMagicPop(x, y, emoji) {
+        const pop = document.createElement("div");
+        pop.className = "magic-pop";
         pop.innerText = emoji;
-        pop.style.left = x + 'px';
-        pop.style.top = y + 'px';
+        pop.style.left = x + "px";
+        pop.style.top = y + "px";
         document.body.appendChild(pop);
         setTimeout(() => pop.remove(), 1000);
-    }
+      }
 
-    function shuffleArray(array) {
+      function shuffleArray(array) {
         let arr = array.slice();
         for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
         }
         return arr;
-    }
+      }
 
-    function returnToMenu() {
+      function returnToMenu() {
         if (timerInterval) clearInterval(timerInterval);
-        document.getElementById('game-container').style.display = 'none';
-        document.getElementById('score-board').style.display = 'none';
-        document.getElementById('start-screen').style.display = 'block';
+        document.getElementById("game-container").style.display = "none";
+        document.getElementById("score-board").style.display = "none";
+        document.getElementById("start-screen").style.display = "block";
         playSound("Volviendo al inicio", 1.2);
-    }
+      }
 
-    // --- Lógica de Inicio ---
-    function startGame(mode) {
-        const nameInput = document.getElementById('player-name').value.trim();
+      // --- Lógica de Inicio ---
+      function startGame(mode) {
+        const nameInput = document.getElementById("player-name").value.trim();
         if (!nameInput) {
-            playSound("Por favor, dime tu nombre", 1.2);
-            document.getElementById('start-screen').classList.add('shake');
-            setTimeout(() => document.getElementById('start-screen').classList.remove('shake'), 500);
-            return;
+          playSound("Por favor, dime tu nombre", 1.2);
+          document.getElementById("start-screen").classList.add("shake");
+          setTimeout(
+            () =>
+              document.getElementById("start-screen").classList.remove("shake"),
+            500,
+          );
+          return;
         }
-        
+
         playerName = nameInput;
         gameMode = mode;
-        
-        // Configurar UI según el modo
-        const titleEl = document.getElementById('game-title-active');
-        const qEl = document.getElementById('question');
-        const mathInput = document.getElementById('answer');
-        const mathBtn = document.getElementById('btn-submit');
-        const optionsGrid = document.getElementById('options-container');
-        
-        const avatarEl = document.getElementById('wizard-avatar');
-        
-        // Reset inputs
-        mathInput.style.display = 'none';
-        mathBtn.style.display = 'none';
-        optionsGrid.style.display = 'none';
 
-        if(mode === 'math') {
-            titleEl.innerText = "Magia Matemática";
-            titleEl.style.color = "var(--math)";
-            avatarEl.innerText = "🧙‍♂️";
-            mathInput.style.display = 'block';
-            mathBtn.style.display = 'block';
-        } else if (mode === 'english') {
-            titleEl.innerText = "Conjuros en Inglés";
-            titleEl.style.color = "var(--english)";
-            avatarEl.innerText = "🇬🇧";
-            optionsGrid.style.display = 'grid';
-            questionsList = shuffleArray(englishQuestions).slice(0, 10);
-        } else if (mode === 'geo') {
-            titleEl.innerText = "Explorador del Mundo";
-            titleEl.style.color = "var(--geo)";
-            avatarEl.innerText = "🌍";
-            optionsGrid.style.display = 'grid';
-            questionsList = shuffleArray(geoQuestions).slice(0, 10);
-            qEl.style.fontSize = "2.2rem"; // Texto un poco más chico para nombres largos
+        // Configurar UI según el modo
+        const titleEl = document.getElementById("game-title-active");
+        const qEl = document.getElementById("question");
+        const mathInput = document.getElementById("answer");
+        const mathBtn = document.getElementById("btn-submit");
+        const optionsGrid = document.getElementById("options-container");
+
+        const avatarEl = document.getElementById("wizard-avatar");
+
+        // Reset inputs
+        mathInput.style.display = "none";
+        mathBtn.style.display = "none";
+        optionsGrid.style.display = "none";
+
+        if (mode === "math") {
+          titleEl.innerText = "Magia Matemática";
+          titleEl.style.color = "var(--math)";
+          avatarEl.innerText = "🧙‍♂️";
+          mathInput.style.display = "block";
+          mathBtn.style.display = "block";
+        } else if (mode === "english") {
+          titleEl.innerText = "Conjuros en Inglés";
+          titleEl.style.color = "var(--english)";
+          avatarEl.innerText = "🇬🇧";
+          optionsGrid.style.display = "grid";
+          questionsList = shuffleArray(englishQuestions).slice(0, 10);
+        } else if (mode === "geo") {
+          titleEl.innerText = "Explorador del Mundo";
+          titleEl.style.color = "var(--geo)";
+          avatarEl.innerText = "🌍";
+          optionsGrid.style.display = "grid";
+          questionsList = shuffleArray(geoQuestions).slice(0, 10);
+          qEl.style.fontSize = "2.2rem"; // Texto un poco más chico para nombres largos
         }
 
-        document.getElementById('start-screen').style.display = 'none';
-        document.getElementById('game-container').style.display = 'block';
-        
+        document.getElementById("start-screen").style.display = "none";
+        document.getElementById("game-container").style.display = "block";
+
         playSound(`¡Prepara tu mente, ${playerName}!`, 1.2);
-        
+
         // Empezar juego
-        score = 0; count = 1; seconds = 0;
+        score = 0;
+        count = 1;
+        seconds = 0;
         startTimer();
         generateQuestion();
-    }
+      }
 
-    // --- Lógica del Juego ---
-    function startTimer() {
-        timerInterval = setInterval(() => { 
-            seconds++; 
-            document.getElementById('timer').innerText = seconds; 
+      // --- Lógica del Juego ---
+      function startTimer() {
+        timerInterval = setInterval(() => {
+          seconds++;
+          document.getElementById("timer").innerText = seconds;
         }, 1000);
-    }
+      }
 
-    function generateQuestion() {
-        const qEl = document.getElementById('question');
-        const avatarEl = document.getElementById('wizard-avatar');
-        
-        if (gameMode === 'math') {
-            avatarEl.innerText = "🧙‍♂️";
-            const ops = ['+', '-', '*', '/'];
-            const op = ops[Math.floor(Math.random() * ops.length)];
-            let n1, n2;
+      function generateQuestion() {
+        const qEl = document.getElementById("question");
+        const avatarEl = document.getElementById("wizard-avatar");
 
-            if (op === '+') { 
-                n1 = Math.floor(Math.random() * 800) + 100;
-                n2 = Math.floor(Math.random() * 800) + 100;
-                currentAns = n1 + n2; 
-            }
-            else if (op === '-') { 
-                n1 = Math.floor(Math.random() * 800) + 200;
-                n2 = Math.floor(Math.random() * (n1 - 100)) + 50;
-                currentAns = n1 - n2; 
-            }
-            else if (op === '*') { 
-                if (Math.random() > 0.5) {
-                    n1 = Math.floor(Math.random() * 11) + 2;
-                    n2 = Math.floor(Math.random() * 11) + 2;
-                } else {
-                    n1 = Math.floor(Math.random() * 40) + 10;
-                    n2 = Math.floor(Math.random() * 8) + 2;
-                }
-                if (Math.random() > 0.5) [n1, n2] = [n2, n1];
-                currentAns = n1 * n2; 
-            }
-            else { 
-                currentAns = Math.floor(Math.random() * 20) + 2;
-                n2 = Math.floor(Math.random() * 11) + 2;
-                n1 = currentAns * n2;
-            }
+        if (gameMode === "math") {
+          avatarEl.innerText = "🧙‍♂️";
+          const ops = ["+", "-", "*", "/"];
+          const op = ops[Math.floor(Math.random() * ops.length)];
+          let n1, n2;
 
-            const opSymbol = op === '*' ? 'x' : (op === '/' ? '÷' : op);
-            qEl.innerText = `${n1} ${opSymbol} ${n2}`;
-            document.getElementById('answer').value = "";
-            setTimeout(() => document.getElementById('answer').focus(), 50);
-            
+          if (op === "+") {
+            n1 = Math.floor(Math.random() * 800) + 100;
+            n2 = Math.floor(Math.random() * 800) + 100;
+            currentAns = n1 + n2;
+          } else if (op === "-") {
+            n1 = Math.floor(Math.random() * 800) + 200;
+            n2 = Math.floor(Math.random() * (n1 - 100)) + 50;
+            currentAns = n1 - n2;
+          } else if (op === "*") {
+            if (Math.random() > 0.5) {
+              n1 = Math.floor(Math.random() * 11) + 2;
+              n2 = Math.floor(Math.random() * 11) + 2;
+            } else {
+              n1 = Math.floor(Math.random() * 40) + 10;
+              n2 = Math.floor(Math.random() * 8) + 2;
+            }
+            if (Math.random() > 0.5) [n1, n2] = [n2, n1];
+            currentAns = n1 * n2;
+          } else {
+            currentAns = Math.floor(Math.random() * 20) + 2;
+            n2 = Math.floor(Math.random() * 11) + 2;
+            n1 = currentAns * n2;
+          }
+
+          const opSymbol = op === "*" ? "x" : op === "/" ? "÷" : op;
+          qEl.innerText = `${n1} ${opSymbol} ${n2}`;
+          document.getElementById("answer").value = "";
+          setTimeout(() => document.getElementById("answer").focus(), 50);
         } else {
-            // Inglés o Geo
-            avatarEl.innerText = gameMode === 'english' ? "🇬🇧" : "🌍";
-            currentQ = questionsList[count - 1];
-            qEl.innerText = currentQ.q;
-            
-            // Actualizar botones de opción
-            for(let i = 0; i < 4; i++) {
-                const btn = document.getElementById(`opt-${i}`);
-                btn.innerText = currentQ.options[i];
-                btn.style.background = "rgba(255,255,255,0.15)";
-                btn.disabled = false;
-            }
+          // Inglés o Geo
+          avatarEl.innerText = gameMode === "english" ? "🇬🇧" : "🌍";
+          currentQ = questionsList[count - 1];
+          qEl.innerText = currentQ.q;
+
+          // Actualizar botones de opción
+          for (let i = 0; i < 4; i++) {
+            const btn = document.getElementById(`opt-${i}`);
+            btn.innerText = currentQ.options[i];
+            btn.style.background = "rgba(255,255,255,0.15)";
+            btn.disabled = false;
+          }
         }
-        
+
         updateProgressBar();
-    }
+      }
 
-    function updateProgressBar() {
+      function updateProgressBar() {
         const percentage = ((count - 1) / totalQuestions) * 100;
-        document.getElementById('progress-bar').style.width = percentage + '%';
-        
+        document.getElementById("progress-bar").style.width = percentage + "%";
+
         // Cambiar color de la barra según el modo
-        const pb = document.getElementById('progress-bar');
-        if(gameMode === 'math') pb.style.background = "linear-gradient(90deg, #2ecc71, #a8e6cf)";
-        else if (gameMode === 'english') pb.style.background = "linear-gradient(90deg, #e67e22, #f39c12)";
+        const pb = document.getElementById("progress-bar");
+        if (gameMode === "math")
+          pb.style.background = "linear-gradient(90deg, #2ecc71, #a8e6cf)";
+        else if (gameMode === "english")
+          pb.style.background = "linear-gradient(90deg, #e67e22, #f39c12)";
         else pb.style.background = "linear-gradient(90deg, #1abc9c, #16a085)";
-    }
+      }
 
-    // Checking Math
-    function checkAnswer() {
-        const inputEl = document.getElementById('answer');
-        if(inputEl.value === "") return;
-        
+      // Checking Math
+      function checkAnswer() {
+        const inputEl = document.getElementById("answer");
+        if (inputEl.value === "") return;
+
         const userVal = parseInt(inputEl.value);
-        const fb = document.getElementById('feedback');
-        const container = document.getElementById('game-container');
-        
+        const fb = document.getElementById("feedback");
+        const container = document.getElementById("game-container");
+
         if (userVal === currentAns) {
-            handleCorrect();
+          handleCorrect();
         } else {
-            const isHigher = userVal < currentAns;
-            fb.innerHTML = `<span style='color:var(--error)'>¡Prueba un número más ${isHigher ? 'alto ⬆️' : 'bajo ⬇️'}!</span>`;
-            document.getElementById('wizard-avatar').innerText = "🧙‍♂️💦";
-            playSound("Ups, un poco más " + (isHigher ? "alto" : "bajo"), 0.8);
-            
-            container.classList.add('shake');
-            setTimeout(() => container.classList.remove('shake'), 500);
-            inputEl.value = ""; 
-            setTimeout(() => inputEl.focus(), 50);
+          const isHigher = userVal < currentAns;
+          fb.innerHTML = `<span style='color:var(--error)'>¡Prueba un número más ${isHigher ? "alto ⬆️" : "bajo ⬇️"}!</span>`;
+          document.getElementById("wizard-avatar").innerText = "🧙‍♂️💦";
+          playSound("Ups, un poco más " + (isHigher ? "alto" : "bajo"), 0.8);
+
+          container.classList.add("shake");
+          setTimeout(() => container.classList.remove("shake"), 500);
+          inputEl.value = "";
+          setTimeout(() => inputEl.focus(), 50);
         }
-    }
+      }
 
-    document.getElementById('answer').addEventListener('keypress', (e) => { 
-        if(e.key === 'Enter') checkAnswer(); 
-    });
+      document.getElementById("answer").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") checkAnswer();
+      });
 
-    // Checking English/Geo
-    function checkMultipleChoice(selectedIndex) {
-        const fb = document.getElementById('feedback');
-        const container = document.getElementById('game-container');
-        
+      // Checking English/Geo
+      function checkMultipleChoice(selectedIndex) {
+        const fb = document.getElementById("feedback");
+        const container = document.getElementById("game-container");
+
         // Deshabilitar todos los botones para que no haga doble click
-        for(let i=0; i<4; i++) document.getElementById(`opt-${i}`).disabled = true;
+        for (let i = 0; i < 4; i++)
+          document.getElementById(`opt-${i}`).disabled = true;
 
         if (selectedIndex === currentQ.correct) {
-            document.getElementById(`opt-${selectedIndex}`).style.background = "var(--success)";
-            handleCorrect();
+          document.getElementById(`opt-${selectedIndex}`).style.background =
+            "var(--success)";
+          handleCorrect();
         } else {
-            // Incorrecto
-            document.getElementById(`opt-${selectedIndex}`).style.background = "var(--error)";
-            document.getElementById(`opt-${currentQ.correct}`).style.background = "var(--success)"; // mostrar correcta
-            
-            fb.innerHTML = `<span style='color:var(--error)'>¡Ups! Era ${currentQ.options[currentQ.correct]}</span>`;
-            document.getElementById('wizard-avatar').innerText = gameMode === 'english' ? "🙈" : "😕";
-            playSound("Ups, casi", 0.8);
-            
-            container.classList.add('shake');
-            setTimeout(() => container.classList.remove('shake'), 500);
-            
-            // Pasar a la siguiente después de ver la correcta (sin sumar score)
-            setTimeout(nextQuestion, 2000);
-        }
-    }
+          // Incorrecto
+          document.getElementById(`opt-${selectedIndex}`).style.background =
+            "var(--error)";
+          document.getElementById(`opt-${currentQ.correct}`).style.background =
+            "var(--success)"; // mostrar correcta
 
-    function handleCorrect() {
-        const fb = document.getElementById('feedback');
-        const container = document.getElementById('game-container');
-        
+          fb.innerHTML = `<span style='color:var(--error)'>¡Ups! Era ${currentQ.options[currentQ.correct]}</span>`;
+          document.getElementById("wizard-avatar").innerText =
+            gameMode === "english" ? "🙈" : "😕";
+          playSound("Ups, casi", 0.8);
+
+          container.classList.add("shake");
+          setTimeout(() => container.classList.remove("shake"), 500);
+
+          // Pasar a la siguiente después de ver la correcta (sin sumar score)
+          setTimeout(nextQuestion, 2000);
+        }
+      }
+
+      function handleCorrect() {
+        const fb = document.getElementById("feedback");
+        const container = document.getElementById("game-container");
+
         score++;
-        fb.innerHTML = "<span style='color:var(--success)'>¡Correcto! ✨🌟</span>";
-        
-        if(gameMode === 'math') document.getElementById('wizard-avatar').innerText = "🧙‍♂️✨";
-        else if(gameMode === 'english') document.getElementById('wizard-avatar').innerText = "🗽✨";
-        else document.getElementById('wizard-avatar').innerText = "🗺️✨";
+        fb.innerHTML =
+          "<span style='color:var(--success)'>¡Correcto! ✨🌟</span>";
+
+        if (gameMode === "math")
+          document.getElementById("wizard-avatar").innerText = "🧙‍♂️✨";
+        else if (gameMode === "english")
+          document.getElementById("wizard-avatar").innerText = "🗽✨";
+        else document.getElementById("wizard-avatar").innerText = "🗺️✨";
 
         playSound("¡Excelente!", 1.5);
-        
+
         const rect = container.getBoundingClientRect();
-        createMagicPop(rect.left + rect.width/2, rect.top + rect.height/2, "⭐");
-        createMagicPop(rect.left + rect.width/2 - 50, rect.top + rect.height/2 - 50, "✨");
-        createMagicPop(rect.left + rect.width/2 + 50, rect.top + rect.height/2 - 50, "🌟");
-        
-        if(window.confetti) {
-            confetti({
-                particleCount: 40,
-                spread: 50,
-                origin: { y: 0.6 },
-                colors: ['#f1c40f', '#9b59b6', '#2ecc71']
-            });
+        createMagicPop(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+          "⭐",
+        );
+        createMagicPop(
+          rect.left + rect.width / 2 - 50,
+          rect.top + rect.height / 2 - 50,
+          "✨",
+        );
+        createMagicPop(
+          rect.left + rect.width / 2 + 50,
+          rect.top + rect.height / 2 - 50,
+          "🌟",
+        );
+
+        if (window.confetti) {
+          confetti({
+            particleCount: 40,
+            spread: 50,
+            origin: { y: 0.6 },
+            colors: ["#f1c40f", "#9b59b6", "#2ecc71"],
+          });
         }
-        
+
         setTimeout(nextQuestion, 1200);
-    }
+      }
 
-    function nextQuestion() {
+      function nextQuestion() {
         if (count < totalQuestions) {
-            count++;
-            document.getElementById('current-idx').innerText = count;
-            document.getElementById('feedback').innerHTML = "";
-            generateQuestion();
+          count++;
+          document.getElementById("current-idx").innerText = count;
+          document.getElementById("feedback").innerHTML = "";
+          generateQuestion();
         } else {
-            clearInterval(timerInterval);
-            document.getElementById('progress-bar').style.width = '100%';
-            setTimeout(showResults, 500);
+          clearInterval(timerInterval);
+          document.getElementById("progress-bar").style.width = "100%";
+          setTimeout(showResults, 500);
         }
-    }
+      }
 
-    // --- Lógica de Resultados y Ranking ---
-    function showResults() {
-        document.getElementById('game-container').style.display = 'none';
-        document.getElementById('score-board').style.display = 'block';
-        
-        document.getElementById('final-msg').innerText = `¡${score} aciertos! ⭐`;
-        document.getElementById('time-result').innerText = `Tiempo: ${seconds} segundos ⏱️`;
-        playSound(`¡Terminaste ${playerName}! Conseguiste ${score} puntos`, 1.2);
-        
-        if(window.confetti) {
-            var duration = 3000;
-            var end = Date.now() + duration;
+      // --- Lógica de Resultados y Ranking ---
+      function showResults() {
+        document.getElementById("game-container").style.display = "none";
+        document.getElementById("score-board").style.display = "block";
 
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#f1c40f', '#9b59b6', '#2ecc71', '#3498db'] });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#f1c40f', '#9b59b6', '#2ecc71', '#3498db'] });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+        document.getElementById("final-msg").innerText =
+          `¡${score} aciertos! ⭐`;
+        document.getElementById("time-result").innerText =
+          `Tiempo: ${seconds} segundos ⏱️`;
+        playSound(
+          `¡Terminaste ${playerName}! Conseguiste ${score} puntos`,
+          1.2,
+        );
+
+        if (window.confetti) {
+          var duration = 3000;
+          var end = Date.now() + duration;
+
+          (function frame() {
+            confetti({
+              particleCount: 5,
+              angle: 60,
+              spread: 55,
+              origin: { x: 0 },
+              colors: ["#f1c40f", "#9b59b6", "#2ecc71", "#3498db"],
+            });
+            confetti({
+              particleCount: 5,
+              angle: 120,
+              spread: 55,
+              origin: { x: 1 },
+              colors: ["#f1c40f", "#9b59b6", "#2ecc71", "#3498db"],
+            });
+            if (Date.now() < end) requestAnimationFrame(frame);
+          })();
         }
 
         saveAndShowRanking(score, seconds, gameMode);
-    }
+        sendEmailWithStats(score, seconds, gameMode, playerName);
+      }
 
-    function saveAndShowRanking(finalScore, finalTime, mode) {
-        const today = new Date().toLocaleDateString('es-ES');
-        let ranking = JSON.parse(localStorage.getItem('academiaMagicaRanking')) || [];
-        
+      function sendEmailWithStats(finalScore, finalTime, mode, name) {
+        if (!EMAIL_DESTINO || EMAIL_DESTINO === "") {
+          console.log(
+            "No se envía correo porque no se configuró el email destino.",
+          );
+          return;
+        }
+
+        const modeNames = {
+          math: "Matemáticas",
+          english: "Inglés",
+          geo: "Geografía",
+        };
+        const modoTexto = modeNames[mode] || mode;
+
+        const data = {
+          _subject: `Nueva partida de ${name} (${modoTexto}) - Academia Mágica`,
+          Alumno: name,
+          Materia: modoTexto,
+          Aciertos: `${finalScore}/10`,
+          Tiempo: `${finalTime} segundos`,
+          Fecha: new Date().toLocaleString("es-ES"),
+        };
+
+        // Enviar usando la API gratuita de FormSubmit
+        fetch(`https://formsubmit.co/ajax/${EMAIL_DESTINO}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => console.log("Correo enviado con éxito", data))
+          .catch((error) => console.error("Error al enviar el correo", error));
+      }
+
+      function saveAndShowRanking(finalScore, finalTime, mode) {
+        const today = new Date().toLocaleDateString("es-ES");
+        let ranking =
+          JSON.parse(localStorage.getItem("academiaMagicaRanking")) || [];
+
         // Agregar jugada actual
-        ranking.push({ name: playerName, score: finalScore, time: finalTime, date: today, mode: mode });
-        
+        ranking.push({
+          name: playerName,
+          score: finalScore,
+          time: finalTime,
+          date: today,
+          mode: mode,
+        });
+
         // Ordenar: 1) Score(desc), 2) Tiempo(asc)
         ranking.sort((a, b) => {
-            if (b.score !== a.score) return b.score - a.score;
-            return a.time - b.time;
+          if (b.score !== a.score) return b.score - a.score;
+          return a.time - b.time;
         });
-        
-        localStorage.setItem('academiaMagicaRanking', JSON.stringify(ranking));
-        
+
+        localStorage.setItem("academiaMagicaRanking", JSON.stringify(ranking));
+
         // Renderizar Top 5 del día actual (sin importar qué materia, o podríamos filtrar)
         // Por ahora muestro el Ranking mezclado general del día
-        const rankingList = document.getElementById('ranking-list');
-        rankingList.innerHTML = '';
-        
-        let todayRanking = ranking.filter(r => r.date === today).slice(0, 5);
-        
-        todayRanking.forEach((entry, index) => {
-            const li = document.createElement('li');
-            let medalla = '⭐';
-            if(index === 0) medalla = '🥇';
-            if(index === 1) medalla = '🥈';
-            if(index === 2) medalla = '🥉';
-            
-            const isCurrentPlay = entry.name === playerName && entry.score === finalScore && entry.time === finalTime && entry.mode === mode ? 'font-weight: bold; color: var(--secondary);' : '';
-            
-            let colorModo = entry.mode === 'math' ? 'var(--math)' : (entry.mode === 'english' ? 'var(--english)' : 'var(--geo)');
-            let iconoModo = entry.mode === 'math' ? '🔢' : (entry.mode === 'english' ? '🔤' : '🌍');
+        const rankingList = document.getElementById("ranking-list");
+        rankingList.innerHTML = "";
 
-            li.innerHTML = `
+        let todayRanking = ranking.filter((r) => r.date === today).slice(0, 5);
+
+        todayRanking.forEach((entry, index) => {
+          const li = document.createElement("li");
+          let medalla = "⭐";
+          if (index === 0) medalla = "🥇";
+          if (index === 1) medalla = "🥈";
+          if (index === 2) medalla = "🥉";
+
+          const isCurrentPlay =
+            entry.name === playerName &&
+            entry.score === finalScore &&
+            entry.time === finalTime &&
+            entry.mode === mode
+              ? "font-weight: bold; color: var(--secondary);"
+              : "";
+
+          let colorModo =
+            entry.mode === "math"
+              ? "var(--math)"
+              : entry.mode === "english"
+                ? "var(--english)"
+                : "var(--geo)";
+          let iconoModo =
+            entry.mode === "math"
+              ? "🔢"
+              : entry.mode === "english"
+                ? "🔤"
+                : "🌍";
+
+          li.innerHTML = `
                 <div style="display:flex; align-items:center; ${isCurrentPlay}">
                     <span>${medalla} ${entry.name}</span>
                     <span class="mode-badge" style="background:${colorModo};">${iconoModo}</span>
                 </div>
                 <span style="${isCurrentPlay}">${entry.score}/10 <small>(${entry.time}s)</small></span>
             `;
-            rankingList.appendChild(li);
+          rankingList.appendChild(li);
         });
-    }
-
-</script>
-</body>
+      }
+    </script>
+  </body>
 </html>

@@ -3,57 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafío Matemático Pro</title>
+    <title>Academia Mágica de Matemáticas ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #6c5ce7; --success: #00b894; --error: #d63031; }
-        body { font-family: 'Arial Rounded MT Bold', sans-serif; background: linear-gradient(135deg, #a8c0ff, #3f2b96); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #2d3436; }
-        #game-container { background: #fff; padding: 2.5rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center; width: 90%; max-width: 450px; border: 5px solid #fff; }
-        .stats { display: flex; justify-content: space-between; font-size: 1.1rem; margin-bottom: 10px; color: #636e72; }
-        #question { font-size: 3.5rem; margin: 15px 0; color: var(--primary); text-shadow: 2px 2px #eee; }
-        input { width: 120px; padding: 15px; font-size: 2rem; border: 3px solid #dfe6e9; border-radius: 15px; text-align: center; outline: none; }
-        input:focus { border-color: var(--primary); }
-        button { background: var(--success); color: white; border: none; padding: 15px 30px; font-size: 1.3rem; border-radius: 50px; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 0 #009475; transition: 0.1s; width: 100%; }
-        button:active { transform: translateY(4px); box-shadow: 0 1px 0 #009475; }
-        #feedback { margin-top: 20px; font-size: 1.2rem; font-weight: bold; min-height: 30px; }
-        .bounce { animation: bounce 0.5s; }
-        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        :root {
+            --primary: #9b59b6;
+            --secondary: #f1c40f;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --bg-dark: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: radial-gradient(circle at center, #3b2c5e 0%, #1a1025 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Twinkling stars background */
+        .stars {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px white; }
+        }
+
+        #game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 0 40px rgba(155, 89, 182, 0.5), inset 0 0 20px rgba(255,255,255,0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid rgba(255,255,255,0.3);
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.2rem;
+            margin-top: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .avatar {
+            font-size: 5rem;
+            margin: -60px auto 10px;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            width: 120px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
+
+        #question {
+            font-size: 4rem;
+            margin: 20px 0;
+            color: #fff;
+            text-shadow: 0 0 15px var(--primary), 0 0 30px var(--primary);
+            font-weight: 600;
+        }
+
+        input {
+            width: 160px;
+            padding: 15px;
+            font-size: 2.5rem;
+            border: 4px solid var(--primary);
+            border-radius: 20px;
+            text-align: center;
+            outline: none;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            font-family: inherit;
+            box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 20px var(--secondary), inset 0 3px 5px rgba(0,0,0,0.2);
+            transform: scale(1.05);
+        }
+
+        button {
+            background: linear-gradient(to bottom, #f1c40f, #f39c12);
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 6px 0 #d68910, 0 15px 20px rgba(0,0,0,0.4);
+            transition: all 0.1s;
+            width: 100%;
+            font-family: inherit;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #d68910, 0 5px 5px rgba(0,0,0,0.4);
+        }
+
+        #feedback {
+            margin-top: 25px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            min-height: 40px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .shake { animation: shake 0.5s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+        }
+
+        .magic-pop {
+            position: absolute;
+            pointer-events: none;
+            animation: pop 1s ease-out forwards;
+            font-size: 2rem;
+            z-index: 20;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0) translateY(0); opacity: 1; }
+            100% { transform: scale(1.5) translateY(-50px); opacity: 0; }
+        }
+
+        #score-board { display: none; }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--success), #a8e6cf);
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 <body>
 
+<div class="stars" id="stars-container"></div>
+
 <div id="game-container">
     <div id="quiz-section">
-        <div class="stats">
-            <span>Pregunta: <b id="current-idx">1</b>/10</span>
-            <span>Tiempo: <b id="timer">0</b>s</span>
+        <div class="avatar" id="wizard-avatar">🧙‍♂️</div>
+        <h1 id="game-title">Magia Matemática</h1>
+        
+        <div class="progress-bar-container">
+            <div id="progress-bar"></div>
         </div>
+
+        <div class="stats">
+            <span>✨ Nivel: <b id="current-idx">1</b>/10</span>
+            <span>⏱️ <b id="timer">0</b>s</span>
+        </div>
+
         <div id="question">--</div>
-        <input type="number" id="answer" autofocus>
-        <button onclick="checkAnswer()">¡LISTO!</button>
+        <input type="number" id="answer" autofocus placeholder="?">
+        <button onclick="checkAnswer()">¡Lanzar Hechizo!</button>
         <div id="feedback"></div>
     </div>
 
-    <div id="score-board" style="display:none;">
-        <h1>🏆 ¡Fin del Juego!</h1>
-        <p id="final-msg" style="font-size: 1.4rem;"></p>
-        <p id="time-result"></p>
-        <button onclick="location.reload()">Jugar de nuevo</button>
+    <div id="score-board">
+        <div class="avatar">🎓</div>
+        <h1>¡Misión Cumplida!</h1>
+        <p id="final-msg" style="font-size: 1.8rem; color: var(--secondary); margin: 20px 0;"></p>
+        <p id="time-result" style="font-size: 1.3rem; margin-bottom: 30px;"></p>
+        <button onclick="location.reload()">Jugar de nuevo 🔄</button>
     </div>
 </div>
 
-<script>
-    let currentAns, score = 0, count = 1, seconds = 0, timerInterval;
-    const synth = window.speechSynthesis;
+<!-- Light Confetti Script for the magic effect -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    function playSound(text, pitch = 1) {
-        const utter = new SpeechSynthesisUtterance(text);
+<script>
+    // Create stars background
+    const starsContainer = document.getElementById('stars-container');
+    for (let i = 0; i < 50; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.width = Math.random() * 4 + 1 + 'px';
+        star.style.height = star.style.width;
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDuration = Math.random() * 3 + 1 + 's';
+        star.style.animationDelay = Math.random() * 2 + 's';
+        starsContainer.appendChild(star);
+    }
+
+    let currentAns, score = 0, count = 1, seconds = 0, timerInterval;
+    const totalQuestions = 10;
+    let synth = window.speechSynthesis;
+
+    function playSound(text, pitch = 1.2, rate = 1.1) {
+        if (!synth) return;
+        synth.cancel();
+        let utter = new SpeechSynthesisUtterance(text);
         utter.pitch = pitch;
-        utter.lang = 'es-AR';
+        utter.rate = rate;
+        utter.lang = 'es-ES';
         synth.speak(utter);
     }
 
+    function createMagicPop(x, y, emoji) {
+        const pop = document.createElement('div');
+        pop.className = 'magic-pop';
+        pop.innerText = emoji;
+        pop.style.left = x + 'px';
+        pop.style.top = y + 'px';
+        document.body.appendChild(pop);
+        setTimeout(() => pop.remove(), 1000);
+    }
+
     function startTimer() {
-        timerInterval = setInterval(() => { seconds++; document.getElementById('timer').innerText = seconds; }, 1000);
+        timerInterval = setInterval(() => { 
+            seconds++; 
+            document.getElementById('timer').innerText = seconds; 
+        }, 1000);
     }
 
     function generateQuestion() {
@@ -61,55 +284,141 @@
         const op = ops[Math.floor(Math.random() * ops.length)];
         let n1, n2;
 
-        if (op === '+') { n1 = Math.floor(Math.random() * 100) + 10; n2 = Math.floor(Math.random() * 100) + 10; currentAns = n1 + n2; }
-        else if (op === '-') { n1 = Math.floor(Math.random() * 150) + 50; n2 = Math.floor(Math.random() * n1); currentAns = n1 - n2; }
-        else if (op === '*') { n1 = Math.floor(Math.random() * 15) + 2; n2 = Math.floor(Math.random() * 12) + 2; currentAns = n1 * n2; }
-        else { currentAns = Math.floor(Math.random() * 12) + 1; n2 = Math.floor(Math.random() * 12) + 1; n1 = currentAns * n2; }
+        // 4th Grade Math logic
+        if (op === '+') { 
+            n1 = Math.floor(Math.random() * 800) + 100; // 3 digits
+            n2 = Math.floor(Math.random() * 800) + 100; // 3 digits
+            currentAns = n1 + n2; 
+        }
+        else if (op === '-') { 
+            n1 = Math.floor(Math.random() * 800) + 200; // 3 digits
+            n2 = Math.floor(Math.random() * (n1 - 100)) + 50; // smaller
+            currentAns = n1 - n2; 
+        }
+        else if (op === '*') { 
+            n1 = Math.floor(Math.random() * 11) + 2;    // 2 to 12
+            n2 = Math.floor(Math.random() * 11) + 2;    // 2 to 12
+            currentAns = n1 * n2; 
+        }
+        else { 
+            currentAns = Math.floor(Math.random() * 12) + 1; // Ans 1-12
+            n2 = Math.floor(Math.random() * 9) + 2;          // Divisor 2-10
+            n1 = currentAns * n2;                            // Dividend
+        }
 
-        document.getElementById('question').innerText = `${n1} ${op.replace('*','x').replace('/','÷')} ${n2}`;
+        const opSymbol = op === '*' ? 'x' : (op === '/' ? '÷' : op);
+        document.getElementById('question').innerText = `${n1} ${opSymbol} ${n2}`;
         document.getElementById('answer').value = "";
         document.getElementById('answer').focus();
+        document.getElementById('wizard-avatar').innerText = "🧙‍♂️";
+        updateProgressBar();
+    }
+
+    function updateProgressBar() {
+        const percentage = ((count - 1) / totalQuestions) * 100;
+        document.getElementById('progress-bar').style.width = percentage + '%';
     }
 
     function checkAnswer() {
+        if(document.getElementById('answer').value === "") return;
+        
         const userVal = parseInt(document.getElementById('answer').value);
         const fb = document.getElementById('feedback');
+        const container = document.getElementById('game-container');
         
         if (userVal === currentAns) {
             score++;
-            fb.innerHTML = "<span style='color:var(--success)'>¡GENIAL! 🌟</span>";
-            playSound("¡Muy bien!", 1.5);
-            document.getElementById('game-container').classList.add('bounce');
-            setTimeout(() => document.getElementById('game-container').classList.remove('bounce'), 500);
-            nextQuestion();
+            fb.innerHTML = "<span style='color:var(--success)'>¡Correcto! ✨🌟</span>";
+            document.getElementById('wizard-avatar').innerText = "🧙‍♂️✨";
+            playSound("¡Excelente hechizo!", 1.5);
+            
+            const rect = container.getBoundingClientRect();
+            createMagicPop(rect.left + rect.width/2, rect.top + rect.height/2, "⭐");
+            createMagicPop(rect.left + rect.width/2 - 50, rect.top + rect.height/2 - 50, "✨");
+            createMagicPop(rect.left + rect.width/2 + 50, rect.top + rect.height/2 - 50, "🌟");
+            
+            if(window.confetti) {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.6 },
+                    colors: ['#f1c40f', '#9b59b6', '#2ecc71']
+                });
+            }
+            
+            setTimeout(nextQuestion, 1200);
         } else {
-            fb.innerHTML = `<span style='color:var(--error)'>${userVal < currentAns ? '¡Más alto! ⬆️' : '¡Más bajo! ⬇️'}</span>`;
-            playSound("Casi", 0.5);
+            const isHigher = userVal < currentAns;
+            fb.innerHTML = `<span style='color:var(--error)'>¡Falla! Prueba con un número más ${isHigher ? 'alto ⬆️' : 'bajo ⬇️'}</span>`;
+            document.getElementById('wizard-avatar').innerText = "🧙‍♂️💦";
+            playSound("Ups, un poco más " + (isHigher ? "alto" : "bajo"), 0.8);
+            
+            container.classList.add('shake');
+            setTimeout(() => container.classList.remove('shake'), 500);
+            document.getElementById('answer').value = ""; 
+            document.getElementById('answer').focus();
         }
     }
 
     function nextQuestion() {
-        if (count < 10) {
+        if (count < totalQuestions) {
             count++;
             document.getElementById('current-idx').innerText = count;
-            setTimeout(generateQuestion, 800);
+            document.getElementById('feedback').innerHTML = "";
+            generateQuestion();
         } else {
             clearInterval(timerInterval);
-            showResults();
+            document.getElementById('progress-bar').style.width = '100%';
+            setTimeout(showResults, 500);
         }
     }
 
     function showResults() {
         document.getElementById('quiz-section').style.display = 'none';
         document.getElementById('score-board').style.display = 'block';
-        document.getElementById('final-msg').innerText = `Puntaje: ${score}/10`;
-        document.getElementById('time-result').innerText = `Lo hiciste en ${seconds} segundos.`;
-        playSound(`Terminaste. Tu puntaje es ${score}`, 1);
+        
+        document.getElementById('final-msg').innerText = `¡Completaste ${score} hechizos correctos! ⭐`;
+        document.getElementById('time-result').innerText = `Tiempo mágico: ${seconds} segundos ⏱️`;
+        playSound(`¡Felicidades! Lograste 10 puntos en ${seconds} segundos`, 1.2);
+        
+        if(window.confetti) {
+            var duration = 3000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#f1c40f', '#9b59b6', '#2ecc71', '#3498db']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#f1c40f', '#9b59b6', '#2ecc71', '#3498db']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
     }
 
-    startTimer();
-    generateQuestion();
-    document.getElementById('answer').addEventListener('keypress', (e) => { if(e.key === 'Enter') checkAnswer(); });
+    // Start
+    window.onload = () => {
+        // Only greeting text once
+        // playSound("Bienvenido a la academia mágica de matemáticas", 1);
+        startTimer();
+        generateQuestion();
+    };
+
+    document.getElementById('answer').addEventListener('keypress', (e) => { 
+        if(e.key === 'Enter') checkAnswer(); 
+    });
 </script>
 </body>
 </html>
